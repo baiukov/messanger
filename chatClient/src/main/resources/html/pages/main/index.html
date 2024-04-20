@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name='author' content='Aleksei Baiukov'>
-	<script type='module' src="../../dist/bundle.js"></script>
+	<script type='module' src="dist/bundle.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Erica+One&display=swap" rel="stylesheet">
@@ -15,34 +15,22 @@
 </head>
 
 <body>
-	<div class='login-wrapper'>
-		<div class='login-window'>
+	<div class='main-wrapper'>
+		<div class='window'>
 			<div class='header'>
-				<div class='login-header-content'>
+				<div class='header-content'>
 					<img class='logo' src='../../assets/images/logo.png'>
 					<h2 class='title'>CHAT</h2>
 				</div>
 			</div>
 
-			<div class='form-wrapper'>
-				<form class='login'>
-					<div class='field-block'>
-						<div class='field'>
-							<input type='text' placeholder='Username' id='username' required maxlength='30'>
-						</div>
+			<form class='search'>
+				<div class='field'>
+					<input type='text' placeholder='Input username' id='user' maxlength='30'>
+				</div>
 
-						<div class='field'>
-							<input type='password' placeholder='Password' id='password' required maxlength='200'>
-						</div>
-
-						<div class='link-wrapper'>
-							<a class='link' href='../register/index.html'>Don’t have an account?</a>
-						</div>
-					</div>
-
-					<button class='submit' type='submit'>Sign in</button>
-				</form>
-			</div>
+				<button class='submit' type='submit'>Find</button>
+			</form>
 		</div>
 	</div>
 </body>

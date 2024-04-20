@@ -1,0 +1,152 @@
+.login-window, .window {
+	width: 750px;
+	height: 450px;
+	background-color: #E9E9E9;
+	border-color: red;
+}
+
+body {
+	overflow-y: hidden;
+}
+
+.main-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.login-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.header {
+	width: 100%;
+	height: 17%;
+	background-color: #263054;
+}
+
+.title {
+	font-family: "Erica One", sans-serif;
+	font-weight: 400;
+	color: white;
+	font-size: 30pt;
+	line-height: 0;
+}
+
+.header-content {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	padding-left: 10px;
+	gap: 10px;
+	align-items: center;
+}
+
+.login-header-content {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	gap: 10px;
+	justify-content: center;
+	align-items: center;
+}
+
+.logo {
+	width: 8%;
+	height: 75%;
+}
+
+.form-wrapper {
+	display: flex;
+	justify-content: center;
+	height: 83%;
+	align-items: center;
+}
+
+.field-block {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.field {
+	height: 20px;
+}
+
+.field > input {
+	border: none;
+	border-bottom: 2px #909295 solid;
+	background: none;
+	font-family: "Inter", sans-serif;
+	font-weight: 300;
+	padding-left: 7px;
+	font-size: 15pt;
+}
+
+.field > input:focus {
+	border: none;
+	border-bottom: 2px black solid;
+	transition-duration: 0.5s;
+	outline: none;
+}
+
+.link {
+	color: #909295;
+	text-decoration: none;
+}
+
+.link:hover {
+	color: #657792;
+	transition-duration: 0.5s;
+}
+
+.link::after {
+	color: #909295;
+	text-decoration: none;
+}
+
+.link-wrapper {
+	display: flex;
+	justify-content: center;
+	font-family: "Inter", sans-serif;
+	font-size: 9pt;
+	font-weight: 600;
+}
+
+.submit {
+	height: 25px;
+	width: 70px;
+	background-color: #263054;
+	color: white;
+	font-family: "Inter", sans-serif;
+	font-size: 9pt;
+	font-weight: 300;
+	border-radius: 7px;
+	border: none;
+}
+
+.submit:hover {
+	cursor: pointer;
+} 
+
+.login {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.search {
+	height: 10%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	padding-left: 50px;
+}
+
+input[id=user] {
+	width: 500px;
+}

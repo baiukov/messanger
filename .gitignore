@@ -1,3 +1,5 @@
 ﻿.idea
 chatClient/.mvn
 chatClient/src/main/resources/html/node_modules
+chatClient2/src/main/resources/html/node_modules
+mysql-8.0.36-winx64

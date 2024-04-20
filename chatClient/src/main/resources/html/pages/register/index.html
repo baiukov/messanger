@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name='author' content='Aleksei Baiukov'>
-	<script type='module' src="../../dist/bundle.js"></script>
+	<script type='module' src="dist/bundle.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Erica+One&display=swap" rel="stylesheet">
@@ -32,15 +32,26 @@
 						</div>
 
 						<div class='field'>
+							<input type='text' placeholder='First name' id='firstName' required maxlength='20'>
+						</div>
+
+						<div class='field'>
+							<input type='text' placeholder='Second name' id='secondName' required maxlength='20'>
+						</div>
+
+						<div class='field'>
 							<input type='password' placeholder='Password' id='password' required maxlength='200'>
+						</div>
+						<div class='field'>
+							<input type='password' placeholder='Repeat password' id='passwordRepeat' required maxlength='200'>
 						</div>
 
 						<div class='link-wrapper'>
-							<a class='link' href='../register/index.html'>Don’t have an account?</a>
+							<a class='link' href='../login/index.html'>I already have an account</a>
 						</div>
 					</div>
 
-					<button class='submit' type='submit'>Sign in</button>
+					<button class='submit' type='submit'>Sign up</button>
 				</form>
 			</div>
 		</div>
