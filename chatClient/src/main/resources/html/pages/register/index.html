@@ -16,6 +16,8 @@
 </head>
 
 <body>
+	<div class='error-pane'></div>
+
 	<div class='login-wrapper'>
 		<div class='login-window'>
 			<div class='header'>
@@ -26,24 +28,33 @@
 			</div>
 
 			<div class='form-wrapper'>
-				<form class='login' id='login' action='#'>
+				<form class='login' id='register' action='#'>
 					<div class='field-block'>
 						<div class='field'>
 							<input type='text' placeholder='Username' id='userName' required maxlength='30'>
 						</div>
 
 						<div class='field'>
+							<input type='text' placeholder='First name' id='firstName' required maxlength='20'>
+						</div>
+
+						<div class='field'>
+							<input type='text' placeholder='Second name' id='lastName' required maxlength='20'>
+						</div>
+
+						<div class='field'>
 							<input type='password' placeholder='Password' id='password' required maxlength='200'>
+						</div>
+						<div class='field'>
+							<input type='password' placeholder='Repeat password' id='passwordRepeat' required maxlength='200'>
 						</div>
 
 						<div class='link-wrapper'>
-							<a class='link' href='../register/index.html'>Don’t have an account?</a>
+							<a class='link' href='../login/index.html'>I already have an account</a>
 						</div>
 					</div>
 
-					<p class='test'></p>
-
-					<button class='submit' type='submit'>Sign in</button>
+					<button class='submit' type='submit'>Sign up</button>
 				</form>
 			</div>
 		</div>
