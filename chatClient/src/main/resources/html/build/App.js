@@ -21,16 +21,18 @@ var App = /** @class */ (function () {
             }
         });
     };
-    App.sendDataToFront = function (data) {
-        $(".test").text(data);
-        // Object.keys(this.serverEvents).forEach((key: string) => {
-        // 	if (key === eventName) {
-        // 		this.events[key](data)
-        // 	}
-        // })
+    App.sendDataToFront = function (dataStr) {
+        var data = dataStr.split(" ");
+        var eventName = data[0].trim();
+        Object.keys(_a.serverEvents).forEach(function (key) {
+            if (key === eventName) {
+                _a.emitClient("", [eventName, _a.serverEvents[key], data]);
+                _a.serverEvents[key](data);
+            }
+        });
     };
     App.onClient = function (eventName, event) {
-        _a.events[eventName] = event;
+        _a.serverEvents[eventName] = event;
     };
     App.emitClient = function (eventName, data) {
         var message = eventName + " ";
@@ -39,7 +41,9 @@ var App = /** @class */ (function () {
         });
         // @ts-ignore
         window.javaConnector.receiveMessage(message);
-        $("#username").text(1);
+    };
+    App.setID = function (id) {
+        _a.id = id;
     };
     return App;
 }());

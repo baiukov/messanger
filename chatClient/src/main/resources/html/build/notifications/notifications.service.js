@@ -32,6 +32,13 @@ var NotificationsService = /** @class */ (function () {
         show(error);
         log(LogLevels.INFO, "Notification has been shown. Message: " + message);
     };
+    NotificationsService.prototype.showError = function (errorData) {
+        var message = "";
+        for (var i = 1; i < errorData.length; i++) {
+            message += errorData[i] + " ";
+        }
+        this.show(message);
+    };
     return NotificationsService;
 }());
 export { NotificationsService };

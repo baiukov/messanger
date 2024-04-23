@@ -17,17 +17,39 @@ var RegisterService = /** @class */ (function () {
                 var lastName = $("#lastName").val();
                 var password = $("#password").val();
                 var repeatPassword = $("#passwordRepeat").val();
-                if (!name || !password || !firstName || !lastName || !repeatPassword)
-                    return;
+                if (!name || !password || !firstName || !lastName || !repeatPassword) {
+                    App.emit(Events.NOTIFY, "You didn't fill the form properly");
+                    return false;
+                }
+                ;
                 if (password != repeatPassword) {
                     App.emit(Events.NOTIFY, "Passwords don't match");
+                    return false;
                 }
-                // App.emitClient(Events.REGISTER, [name, firstName, lastName, password] )
+                if (password.length < 6) {
+                    App.emit(Events.NOTIFY, "Password should contain at least 6 characters");
+                    return false;
+                }
+                if (name.length < 4) {
+                    App.emit(Events.NOTIFY, "User name should contain at least 4 characters");
+                    return false;
+                }
+                App.emitClient(Events.REGISTER, [name, firstName, lastName, password]);
                 return false;
             });
         };
         this.startListener();
     }
+    RegisterService.prototype.moveToMain = function (message) {
+        if (message.length < 2) {
+            App.emit(Events.NOTIFY, "Unknown error happened");
+            return;
+        }
+        // @ts-ignore
+        window.javaConnector.setID(message[1]);
+        // @ts-ignore
+        window.javaConnector.goToMain();
+    };
     return RegisterService;
 }());
 export { RegisterService };

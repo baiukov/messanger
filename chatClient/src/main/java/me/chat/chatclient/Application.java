@@ -32,7 +32,6 @@ public class Application extends javafx.application.Application {
             }
         });
 
-
         StackPane root = new StackPane(webView);
 
         Scene scene = new Scene(root, 600, 900);

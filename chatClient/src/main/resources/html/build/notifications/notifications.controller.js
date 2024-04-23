@@ -11,6 +11,9 @@ var NotificationsController = /** @class */ (function () {
         App.on(Events.NOTIFY, function (message) {
             _this.notificationsService.show(message);
         });
+        App.onClient(Events.ERROR, function (message) {
+            _this.notificationsService.showError(message);
+        });
     }
     return NotificationsController;
 }());

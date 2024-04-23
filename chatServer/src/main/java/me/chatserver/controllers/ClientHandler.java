@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Třída pro posloucháni a komunikaci s klienty.
@@ -21,7 +23,9 @@ public class ClientHandler extends Thread {
     // uložení streamu pro posílání zpráv
     private PrintWriter out;
 
-    private CommandController commandController = new CommandController();
+    private Map<String, Socket> clients = new HashMap<>();
+
+    private CommandController commandController = new CommandController(this);
 
     // uložení kontrolleru komand
     /**
@@ -61,5 +65,4 @@ public class ClientHandler extends Thread {
     public void sendMessage(String message) {
         this.out.println(message);
     }
-
 }
