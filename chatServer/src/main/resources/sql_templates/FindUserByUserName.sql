@@ -1,0 +1,1 @@
+FROM User WHERE USER_NAME = :userName

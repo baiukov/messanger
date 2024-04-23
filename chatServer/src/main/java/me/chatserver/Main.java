@@ -1,6 +1,7 @@
 package me.chatserver;
 
 import me.chatserver.controllers.ClientHandler;
+import me.chatserver.services.SQLTemplateService;
 
 import java.io.IOException;
 import java.net.ServerSocket;

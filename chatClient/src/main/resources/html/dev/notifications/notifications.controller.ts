@@ -18,6 +18,9 @@ export class NotificationsController {
 			this.notificationsService.show(message)
 		})
 
+		App.onClient(Events.ERROR, (message: string[]) => {
+			this.notificationsService.showError(message)
+		})
 	}
 
 

@@ -38,4 +38,12 @@ export class NotificationsService {
 		log(LogLevels.INFO, "Notification has been shown. Message: " + message)
 	}
 
+	public showError(errorData: string[]) {
+		let message = "";
+		for (let i = 1; i < errorData.length; i++) {
+			message += errorData[i] + " "
+		}
+		this.show(message);
+	}
+
 }
