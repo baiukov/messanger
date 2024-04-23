@@ -1,3 +1,6 @@
 import { App } from './App.js'
-alert("123")
+
+// @ts-ignore
+window.sendDataToFront = App.sendDataToFront
+
 new App()

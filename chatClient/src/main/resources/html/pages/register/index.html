@@ -5,7 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name='author' content='Aleksei Baiukov'>
-	<script type='module' src="dist/bundle.js"></script>
+	<script type='module' src="../../dist/bundle.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Erica+One&display=swap" rel="stylesheet">
@@ -15,6 +16,8 @@
 </head>
 
 <body>
+	<div class='error-pane'></div>
+
 	<div class='login-wrapper'>
 		<div class='login-window'>
 			<div class='header'>
@@ -25,10 +28,10 @@
 			</div>
 
 			<div class='form-wrapper'>
-				<form class='login'>
+				<form class='login' id='register' action='#'>
 					<div class='field-block'>
 						<div class='field'>
-							<input type='text' placeholder='Username' id='username' required maxlength='30'>
+							<input type='text' placeholder='Username' id='userName' required maxlength='30'>
 						</div>
 
 						<div class='field'>
@@ -36,7 +39,7 @@
 						</div>
 
 						<div class='field'>
-							<input type='text' placeholder='Second name' id='secondName' required maxlength='20'>
+							<input type='text' placeholder='Second name' id='lastName' required maxlength='20'>
 						</div>
 
 						<div class='field'>
