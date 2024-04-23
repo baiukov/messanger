@@ -19,6 +19,7 @@ public class MessageRouter {
     }
 
     public void sendMessageToFront(String message) {
+        System.out.println("toFront " + message);
         Platform.runLater(() -> {
             engine.executeScript("window.sendDataToFront('" + message + "')");
         });

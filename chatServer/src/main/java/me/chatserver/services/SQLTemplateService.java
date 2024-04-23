@@ -19,8 +19,17 @@ public class SQLTemplateService {
 
     private Map<Class<SQLTemplate>, String> sqlMap = new HashMap<>();
 
-    public SQLTemplateService() {
+    private static SQLTemplateService sqlTemplateService;
+
+    private SQLTemplateService() {
         loadSqlTemplates();
+    }
+
+    public static SQLTemplateService getSqlTemplateService() {
+        if (sqlTemplateService == null) {
+            sqlTemplateService = new SQLTemplateService();
+        }
+        return sqlTemplateService;
     }
 
     private void loadSqlTemplates() {

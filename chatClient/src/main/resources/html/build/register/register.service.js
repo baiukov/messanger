@@ -7,7 +7,7 @@ var RegisterService = /** @class */ (function () {
                 var name = $("#userName").val();
                 var password = $("#password").val();
                 if (!name || !password)
-                    return;
+                    return false;
                 App.emitClient(Events.LOGIN, [name, password]);
                 return false;
             });

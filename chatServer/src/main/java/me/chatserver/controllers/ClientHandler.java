@@ -49,7 +49,6 @@ public class ClientHandler extends Thread {
             this.out = out;
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
                 commandController.onCommand(inputLine);
             }
         } catch (IOException e) {

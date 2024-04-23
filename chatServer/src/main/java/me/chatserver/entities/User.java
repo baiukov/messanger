@@ -22,6 +22,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "color", referencedColumnName = "id")
+    private Color color;
+
     public User() {
         this.id = UUID.randomUUID().toString();
     }
@@ -31,11 +35,13 @@ public class User {
     public String getFirstName() { return this.firstName; }
     public String getLastName() { return this.lastName; }
     public String getPassword() { return this.password; }
+    public Color getColor() { return this.color; }
 
     public void setID(UUID id) { this.id = id.toString(); }
     public void setUserName(String userName) { this.userName = userName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public void setLastName(String secondName) { this.lastName = secondName; }
     public void setPassword(String password) { this.password = password; }
+    public void setColor(Color color) { this.color = color; }
 
 }

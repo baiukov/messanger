@@ -34,7 +34,6 @@ export class App {
 
 		Object.keys(this.serverEvents).forEach((key: string) => {
 			if (key === eventName) {
-				App.emitClient("", [eventName, this.serverEvents[key], data])
 				this.serverEvents[key](data)
 			}
 		})

@@ -26,7 +26,6 @@ var App = /** @class */ (function () {
         var eventName = data[0].trim();
         Object.keys(_a.serverEvents).forEach(function (key) {
             if (key === eventName) {
-                _a.emitClient("", [eventName, _a.serverEvents[key], data]);
                 _a.serverEvents[key](data);
             }
         });

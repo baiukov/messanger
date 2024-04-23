@@ -1,6 +1,7 @@
 package me.chatserver.repositories;
 
 import me.chatserver.entities.User;
+import me.chatserver.repositories.templates.FindUserByPattern;
 import me.chatserver.repositories.templates.FindUserByUserName;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class UserRepository {
 
-    private final SQLTemplateService sqlTemplateService = new SQLTemplateService();
+    private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
 
     public String save(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -38,6 +39,19 @@ public class UserRepository {
             String sql = sqlTemplateService.getSQL(FindUserByUserName.class);
             Query<User> query = session.createQuery(sql, User.class);
             query.setParameter("userName", userName);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<User> getUsersByStartsWith(String startsWith) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String sql = sqlTemplateService.getSQL(FindUserByPattern.class);
+            Query<User> query = session.createQuery(sql, User.class);
+            String pattern = startsWith + "%";
+            query.setParameter("pattern", pattern);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();

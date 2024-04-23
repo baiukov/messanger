@@ -13,7 +13,7 @@ export class RegisterService {
 			const name = $("#userName").val()
 			const password = $("#password").val()
 
-			if (!name || !password) return
+			if (!name || !password) return false
 
 			App.emitClient(Events.LOGIN, [name, password] )
 			return false;
