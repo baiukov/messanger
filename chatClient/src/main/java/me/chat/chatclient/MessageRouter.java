@@ -1,7 +1,9 @@
 package me.chat.chatclient;
 
 import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
+import netscape.javascript.JSObject;
 
 import java.io.File;
 
@@ -26,10 +28,12 @@ public class MessageRouter {
     }
 
     public void receiveMessage(String message) {
+        System.out.println(message);
         socketClient.sendMessage(message);
     }
 
     public void getID() {
+        System.out.println("toget " + id);
         Platform.runLater(() -> {
             engine.executeScript("window.sendID('" + id + "')");
         });
@@ -40,8 +44,21 @@ public class MessageRouter {
         this.id = id;
     }
 
-    public void goToMain() {
-        File htmlFile = new File(getClass().getResource("/html/pages/main/index.html").getFile());
+    public void goToDialogue(String userID) {
+        switchPage("dialogue");
+        Platform.runLater(() -> {
+            engine.executeScript("window.sendDataToFront('SETDIALOGUEWITH " + userID + "')");
+        });
+    }
+
+    public void switchPage(String folder) {
+        File htmlFile = new File(getClass().getResource("/html/pages/" + folder + "/index.html").getFile());
         engine.load(htmlFile.toURI().toString());
+        engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == Worker.State.SUCCEEDED) {
+                System.out.println("heere" + id);
+                engine.executeScript("window.sendID('" + id + "')");
+            }
+        });
     }
 }

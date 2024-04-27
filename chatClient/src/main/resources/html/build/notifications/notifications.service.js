@@ -1,5 +1,3 @@
-import { LogLevels } from '../enums/logLevels.enum.js';
-import { log } from '../utils/log.js';
 import { secToMs } from '../utils/secToMs.js';
 /*
     Třída NotificationsService - je třída služby notifikací, která se zabývá zpracováním logiky vypísování zpráv na obrazovku a jejich pak mazáním
@@ -30,7 +28,7 @@ var NotificationsService = /** @class */ (function () {
             });
         };
         show(error);
-        log(LogLevels.INFO, "Notification has been shown. Message: " + message);
+        //log(LogLevels.INFO, "Notification has been shown. Message: " + message)
     };
     NotificationsService.prototype.showError = function (errorData) {
         var message = "";

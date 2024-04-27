@@ -26,6 +26,10 @@ public class Color {
 
     }
 
+    public Color(String hexcode) {
+        this.hexcode = hexcode;
+    }
+
     public int getID() { return id; }
 
     public String getName() { return name; }

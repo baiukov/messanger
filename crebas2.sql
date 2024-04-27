@@ -48,6 +48,7 @@ create table messages
    receiver_id          varchar(100) not null  comment '',
    text                 varchar(2000) not null  comment '',
    is_read              smallint not null  comment '',
+   created_at           TIMESTAMP not null default CURRENT_TIMESTAMP comment '',
    primary key (id),
    constraint FK_MESSAGES_SENT_MESS_USERS foreign key (sender_id)
       references users (id) on delete restrict on update restrict

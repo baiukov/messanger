@@ -4,6 +4,6 @@ import { App } from './App.js'
 window.sendDataToFront = App.sendDataToFront
 
 // @ts-ignore
-window.getID = App.setID
+window.sendID = App.setID
 
 new App()

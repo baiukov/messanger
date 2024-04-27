@@ -20,7 +20,11 @@ public class CommandController {
     public void init() {
         commands.addAll(List.of(
                 new Login(),
-                new Register()
+                new Register(),
+                new FetchName(),
+                new FetchUsers(),
+                new FetchColor(),
+                new FetchPartnerData()
         ));
     }
 
@@ -31,6 +35,7 @@ public class CommandController {
                 .filter(c -> c.getName().equalsIgnoreCase(commandName))
                 .findFirst();
         String response = command.map(iCommand -> iCommand.execute(data)).orElse(null);
+        if (response == null) return;
         clientHandler.sendMessage(response);
     }
 

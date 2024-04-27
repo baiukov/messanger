@@ -9,15 +9,21 @@ import me.chatserver.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import java.util.List;
+
 public class ColorRepository {
 
     private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
 
     public int getAvailableAmount() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            String sql = sqlTemplateService.getSQL(CountAvailableColors.class);
-            Query<Color> query = session.createQuery(sql, Color.class);
-            return query.getFetchSize();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Color> criteria = builder.createQuery(Color.class);
+            criteria.from(Color.class);
+            List<Color> data = session.createQuery(criteria).getResultList();
+            return data.size();
         } catch (Exception e) {
             e.printStackTrace();
         }

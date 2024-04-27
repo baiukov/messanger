@@ -45,10 +45,11 @@ var RegisterService = /** @class */ (function () {
             App.emit(Events.NOTIFY, "Unknown error happened");
             return;
         }
+        App.id = message[1];
         // @ts-ignore
         window.javaConnector.setID(message[1]);
         // @ts-ignore
-        window.javaConnector.goToMain();
+        window.javaConnector.switchPage("main");
     };
     return RegisterService;
 }());

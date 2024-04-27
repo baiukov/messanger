@@ -1,10 +1,10 @@
 package me.chatserver.controllers.commands;
 
+import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
-public class Find implements ICommand {
-
-    private final String name = "FIND";
+public class FetchPartnerData implements ICommand {
+    private final String name = Commands.FETCHPARTNERDATA;
 
     private final AppService appService = AppService.getAppService();
 
@@ -15,6 +15,6 @@ public class Find implements ICommand {
 
     @Override
     public String execute(String[] args) {
-        return appService.findUsers(args);
+        return this.name + " " + appService.getUserFullName(args) + " " + appService.getUserColor(args).getHexcode();
     }
 }

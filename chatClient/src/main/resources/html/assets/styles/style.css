@@ -10,12 +10,17 @@
 	border-color: red;
 }
 
+.main-window {
+	height: 100vh;
+}
+
 body {
 	overflow-y: hidden;
 }
 
 .main {
 	background-color: #E9E9E9;
+	height: 100vh;
 }
 
 .main-wrapper {
@@ -32,7 +37,7 @@ body {
 
 .header {
 	width: 100%;
-	height: 17%;
+	height: 80px;
 	background-color: #263054;
 }
 
@@ -48,18 +53,19 @@ body {
 	display: flex;
 	align-items: center;
 	height: 100%;
-	padding-left: 10px;
+	padding-left: 45px;
+	padding-right: 45px;
 }
 
 .left-side {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	width: 500px;
+	width: 450px;
 }
 
 .avatar {
-	background-color: #F2CDC4;
+	background-color: #909295;
 	width: 50px;
 	height: 50px;
 	border-radius: 99999px;
@@ -72,7 +78,7 @@ body {
 	font-size: 16pt
 }
 
-.avatar:hover{
+.clickable-avatar:hover {
 	cursor: pointer;
 	filter: brightness(.9);
 	transition-duration: 0.25s;
@@ -113,7 +119,15 @@ body {
 	height: 20px;
 }
 
-.field > input {
+.message-field {
+	width: 500px;
+	height: 100px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.field > input, .message-field > textarea {
 	border: none;
 	border-bottom: 2px #909295 solid;
 	background: none;
@@ -123,7 +137,7 @@ body {
 	font-size: 15pt;
 }
 
-.field > input:focus {
+.field > input:focus, .message-field > textarea:focus {
 	border: none;
 	border-bottom: 2px black solid;
 	transition-duration: 0.5s;
@@ -189,6 +203,15 @@ input[id=user] {
 	width: 300px;
 }
 
+.message-field > textarea {
+	width: 95%;
+	height: 50px;
+	resize: none;
+	background-color: #dddddd;
+	padding-top: 5px;
+	font-size: 10pt;
+}
+
 .error-pane {
 	position: absolute;
 	height: 18%;
@@ -215,7 +238,73 @@ input[id=user] {
 .error:hover {
 	cursor: pointer;
 }
+
 .error-message {
 	color: white;
 	margin-left: 20px;
+}
+
+.user-list {
+	position: absolute;
+	z-index: 1;
+}
+
+.user-option {
+	padding: 5px 0px 5px 10px;
+	background-color: rgb(240, 240, 240);
+	border: 1px solid rgb(165, 165, 165);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 295.5px;
+}
+
+.user-option:hover {
+	background-color: rgb(216, 216, 216);
+	transition-duration: 0.25s;
+	cursor: pointer;
+}
+
+.dialogue-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 5px 45px 5px 45px;
+	font-family: "Inter", "sans-serif";
+	align-items: center;
+	background-color: #d1d1d1;
+}
+
+.dialogue-header > h2 {
+	font-size: 11pt;
+}
+
+.back-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 8pt;
+}
+
+.back-button:hover {
+	cursor: pointer;
+}
+
+.dialogue-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.dialogue {
+	height: 75vh;
+}
+
+.send-box {
+	display: flex;
+	justify-content: center;
+}
+
+.send {
+	width: 26px;
+	height: 26px;
+	background-image: url('../images/send.svg');
 }

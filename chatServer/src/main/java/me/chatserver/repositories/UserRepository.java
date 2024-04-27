@@ -46,12 +46,25 @@ public class UserRepository {
         return null;
     }
 
+    public User getById(String id) {
+        // vytvoří novou relaci pro provedení transakce
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            // pokusí se najít a vygenerovat entitu uživatele, pokud taková je, vrátí ji
+            return session.get(User.class, id);
+        } finally {
+            // každopadně nakonec relaci ukončí
+            session.close();
+        }
+    }
+
     public List<User> getUsersByStartsWith(String startsWith) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(FindUserByPattern.class);
             Query<User> query = session.createQuery(sql, User.class);
             String pattern = startsWith + "%";
             query.setParameter("pattern", pattern);
+            query.setMaxResults(5);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();

@@ -92,9 +92,33 @@ public class AppService {
         List<User> users = userRepository.getUsersByStartsWith(startsWith);
         StringBuilder sb = new StringBuilder();
         for (User user : users) {
-            sb.append(user.getFirstName()).append(" ").append(user.getLastName()).append(" ");
+            sb.append(" ").append(user.getFirstName())
+                    .append(" ").append(user.getLastName())
+                    .append(" ").append(user.getID());
         }
-        return Events.FIND + sb;
+        return sb.toString();
+    }
+
+    public String getUserFullName(String[] data) {
+        User user = getUser(data);
+        if (user == null) {
+            return "Unknown Unknown";
+        }
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
+    public Color getUserColor(String[] data) {
+        User user = getUser(data);
+        if (user == null) {
+            return new Color("F2C4DE");
+        }
+        return user.getColor();
+    }
+
+    public User getUser(String[] data) {
+        if (data.length < 2) return null;
+        String id = data[1];
+        return userRepository.getById(id);
     }
 
 }

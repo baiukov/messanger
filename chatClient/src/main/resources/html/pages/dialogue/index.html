@@ -17,7 +17,7 @@
 
 <body class='main'>
 	<div class='main-wrapper'>
-		<div class='window'>
+		<div class='main-window'>
 			<div class='header'>
 				<div class='header-content'>
 					<div class='left-side'>
@@ -33,21 +33,38 @@
 				</div>
 			</div>
 
-			<form id='search' class='search'>
-				<div class='field'>
-					<input type='text' placeholder='Input username' id='user' maxlength='30' list='userList'>
-					<div class='user-list'>
+			<div class='dialogue-header'>
+				<div class='back-button'>
+					<img src='../../assets/images/back.svg'>
+					<h3>Back</h3>
+				</div>
+
+				<h2 id='partnerName'>Jakub Novak</h2>
+
+				<div class='avatar-wrapper'>
+					<div class='avatar' id='partnersAvatar'>
+						<h2 id='partnersFirstLetter'></h2>
 					</div>
 				</div>
-			</form>
+			</div>
 
-			<div>
-				<p>Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem
-					ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem
-					ipsumLorem ipsumLorem ipsumLorem ipsum</p>
+			<div class='dialogue-wrapper'>
+				<div class='dialogue'>
+					1
+				</div>
+
+				<form class='send-box'>
+					<div class='message-field'>
+						<textarea type='text' placeholder='Input your message' id='message' maxlength='2000'></textarea>
+						<div class='submit-send'>
+							<img src='../../assets/images/send.svg'>
+						</div>
+					</div>
+				</form>
+
+
 			</div>
 		</div>
-	</div>
 </body>
 
 </html>

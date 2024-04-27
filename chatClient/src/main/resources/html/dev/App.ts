@@ -1,4 +1,7 @@
+import { DialogueModule } from './dialogue/dialogue.module.js'
+import { Events } from './enums/Events.enum.js'
 import { LoggerModule } from './logger/logger.module.js'
+import { MessengerModule } from './messenger/messenger.module.js'
 import { NotificationsModule } from './notifications/notifications.module.js'
 import { RegisterModule } from './register/register.module.js'
 
@@ -8,15 +11,18 @@ export class App {
 		new RegisterModule()  
 		new LoggerModule()
 		new NotificationsModule()
+		new MessengerModule()
+		new DialogueModule()
 	}
 
 	private static events: Record<string, Function> = {}
 
 	private static serverEvents: Record<string, Function> = {}
 
-	private static id: string;
+	public static id: string;
 
 	public static on = (eventName: string, event: Function) => {
+		console.log("on " + eventName)
 		this.events[eventName] = event
 	}
 
@@ -33,6 +39,7 @@ export class App {
 		const eventName: string = data[0].trim()
 
 		Object.keys(this.serverEvents).forEach((key: string) => {
+			// App.emitClient(Events.LOG, [dataStr, eventName, key, eventName === key])
 			if (key === eventName) {
 				this.serverEvents[key](data)
 			}
@@ -53,7 +60,7 @@ export class App {
 	}
 
 	public static setID = (id: string) => {
-		this.id = id
+		App.emit(Events.SETID, id)
 	}
 	
 }
