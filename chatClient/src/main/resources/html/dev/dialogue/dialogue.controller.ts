@@ -16,6 +16,10 @@ export class DialogueController {
 		App.onClient(Events.FETCHPARTNERDATA, (message: string[]) => {
 			this.dialogueService.setPartnerData(message)
 		})
+
+		App.on(Events.SETID, (id: string) => {
+			this.dialogueService.setID(id)
+		})
 	}
 
 }

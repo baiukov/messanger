@@ -1,6 +1,6 @@
 package me.chatserver.services;
 
-import me.chatserver.repositories.SQLTemplate;
+import me.chatserver.database.SQLTemplate;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class SQLTemplateService {
 
-    private final String[] packagePaths = {"me.chatserver.repositories.templates"};
+    private final String[] packagePaths = {"me.chatserver.database.templates"};
 
     private Map<Class<SQLTemplate>, String> sqlMap = new HashMap<>();
 

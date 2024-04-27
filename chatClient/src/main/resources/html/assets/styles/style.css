@@ -294,10 +294,6 @@ input[id=user] {
 	flex-direction: column;
 }
 
-.dialogue {
-	height: 75vh;
-}
-
 .send-box {
 	display: flex;
 	justify-content: center;
@@ -307,4 +303,25 @@ input[id=user] {
 	width: 26px;
 	height: 26px;
 	background-image: url('../images/send.svg');
+}
+
+.dialogue {
+	height: 75vh;
+	overflow-y: scroll;
+	padding-left: 50px;
+	padding-right: 50px;
+	font-family: "Inter", "sans-serif";
+}
+
+.message-text {
+	max-width: 410px;
+}
+
+.message-wrapper {
+	gap: 10px;
+	display: flex;
+}
+
+.message {
+	padding-left: 60px;
 }

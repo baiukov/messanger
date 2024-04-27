@@ -13,4 +13,5 @@ export var Events;
     Events["FETCHCOLOR"] = "FETCHCOLOR";
     Events["SETDIALOGUEWITH"] = "SETDIALOGUEWITH";
     Events["FETCHPARTNERDATA"] = "FETCHPARTNERDATA";
+    Events["SEND"] = "SEND";
 })(Events || (Events = {}));

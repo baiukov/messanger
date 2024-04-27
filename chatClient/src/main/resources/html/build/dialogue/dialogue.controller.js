@@ -10,6 +10,9 @@ var DialogueController = /** @class */ (function () {
         App.onClient(Events.FETCHPARTNERDATA, function (message) {
             _this.dialogueService.setPartnerData(message);
         });
+        App.on(Events.SETID, function (id) {
+            _this.dialogueService.setID(id);
+        });
     }
     return DialogueController;
 }());

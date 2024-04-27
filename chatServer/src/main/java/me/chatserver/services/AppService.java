@@ -1,11 +1,13 @@
 package me.chatserver.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import me.chatserver.database.MessageRepository;
 import me.chatserver.entities.Color;
+import me.chatserver.entities.Message;
 import me.chatserver.entities.User;
 import me.chatserver.enums.Events;
-import me.chatserver.repositories.ColorRepository;
-import me.chatserver.repositories.UserRepository;
+import me.chatserver.database.ColorRepository;
+import me.chatserver.database.UserRepository;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class AppService {
     private static AppService appService;
 
     private final UserRepository userRepository = new UserRepository();
+
+    private final MessageRepository messageRepository = new MessageRepository();
 
     private AppService() {}
 
@@ -99,6 +103,22 @@ public class AppService {
         return sb.toString();
     }
 
+    public void sendMessage(String[] data) {
+        if (data.length < 4) return;
+        String senderID = data[1];
+        User sender = userRepository.getById(senderID);
+        String receiverID = data[2];
+        User receiver = userRepository.getById(receiverID);
+        String messageText = data[3];
+
+        Message message = new Message();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setMessage(messageText);
+        message.setIsRead(false);
+        messageRepository.save(message);
+    }
+
     public String getUserFullName(String[] data) {
         User user = getUser(data);
         if (user == null) {
@@ -119,6 +139,11 @@ public class AppService {
         if (data.length < 2) return null;
         String id = data[1];
         return userRepository.getById(id);
+    }
+
+    public String getPartnerData(String[] args) {
+        if (args.length < 2) return null;
+        return args[1] + " " + appService.getUserFullName(args) + " " + appService.getUserColor(args).getHexcode();
     }
 
 }

@@ -6,5 +6,6 @@ public class Commands {
     public static String FETCHUSERS = "FETCHUSERS";
     public static String FETCHCOLOR = "FETCHCOLOR";
     public static String FETCHPARTNERDATA = "FETCHPARTNERDATA";
+    public static String SEND = "SEND";
 
 }

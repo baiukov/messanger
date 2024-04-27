@@ -1,6 +1,7 @@
 package me.chatserver.entities;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +22,18 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "sender")
+    private List<Message> sendedMessages;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "receiver")
+    private List<Message> receivedMessages;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "color", referencedColumnName = "id")
@@ -43,5 +56,4 @@ public class User {
     public void setLastName(String secondName) { this.lastName = secondName; }
     public void setPassword(String password) { this.password = password; }
     public void setColor(Color color) { this.color = color; }
-
 }

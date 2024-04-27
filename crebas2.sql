@@ -43,7 +43,6 @@ create table users
 create table messages
 (
    id                   varchar(100) not null  comment '',
-   message_id           varchar(100) not null  comment '',
    sender_id            varchar(100) not null  comment '',
    receiver_id          varchar(100) not null  comment '',
    text                 varchar(2000) not null  comment '',

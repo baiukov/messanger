@@ -1,8 +1,8 @@
-package me.chatserver.repositories;
+package me.chatserver.database;
 
 import me.chatserver.entities.User;
-import me.chatserver.repositories.templates.FindUserByPattern;
-import me.chatserver.repositories.templates.FindUserByUserName;
+import me.chatserver.database.templates.FindUserByPattern;
+import me.chatserver.database.templates.FindUserByUserName;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
 import org.hibernate.Session;

@@ -4,6 +4,7 @@ import { LoggerModule } from './logger/logger.module.js'
 import { MessengerModule } from './messenger/messenger.module.js'
 import { NotificationsModule } from './notifications/notifications.module.js'
 import { RegisterModule } from './register/register.module.js'
+import { log } from './utils/log.js'
 
 export class App {
 
@@ -15,21 +16,27 @@ export class App {
 		new DialogueModule()
 	}
 
-	private static events: Record<string, Function> = {}
+	private static events: Record<string, Function[]> = {}
 
 	private static serverEvents: Record<string, Function> = {}
 
 	public static id: string;
 
 	public static on = (eventName: string, event: Function) => {
-		console.log("on " + eventName)
-		this.events[eventName] = event
+		if (!this.events[eventName]) {
+			this.events[eventName] = [event]
+			return
+		}
+		this.events[eventName].push(event)
 	}
 
 	public static emit = (eventName: string, data: any) => {
 		Object.keys(this.events).forEach((key: string) => {
+			log([key, eventName,  key === eventName].toString())
 			if (key === eventName) {
-				this.events[key](data)
+				this.events[key].forEach((event) => {
+					event(data)
+				})
 			}
 		})
 	}

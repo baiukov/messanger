@@ -1,3 +1,3 @@
-package me.chatserver.repositories;
+package me.chatserver.database;
 
 public abstract class SQLTemplate { }

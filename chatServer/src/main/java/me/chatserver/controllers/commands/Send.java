@@ -3,8 +3,9 @@ package me.chatserver.controllers.commands;
 import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
-public class FetchPartnerData implements ICommand {
-    private final String name = Commands.FETCHPARTNERDATA;
+public class Send implements ICommand {
+
+    private final String name = Commands.SEND;
 
     private final AppService appService = AppService.getAppService();
 
@@ -15,6 +16,8 @@ public class FetchPartnerData implements ICommand {
 
     @Override
     public String execute(String[] args) {
-        return this.name + " " + appService.getPartnerData(args);
+        appService.sendMessage(args);
+        return Commands.SEND + " ";
     }
+
 }

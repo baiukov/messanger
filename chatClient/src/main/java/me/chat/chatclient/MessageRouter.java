@@ -6,6 +6,7 @@ import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
 
 import java.io.File;
+import java.util.function.Function;
 
 public class MessageRouter {
 
@@ -45,19 +46,17 @@ public class MessageRouter {
     }
 
     public void goToDialogue(String userID) {
-        switchPage("dialogue");
-        Platform.runLater(() -> {
-            engine.executeScript("window.sendDataToFront('SETDIALOGUEWITH " + userID + "')");
-        });
+        switchPage("dialogue", "window.sendDataToFront('SETDIALOGUEWITH " + userID + "')");
     }
 
-    public void switchPage(String folder) {
+    public void switchPage(String folder, String commandOnReady) {
         File htmlFile = new File(getClass().getResource("/html/pages/" + folder + "/index.html").getFile());
         engine.load(htmlFile.toURI().toString());
         engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
-                System.out.println("heere" + id);
                 engine.executeScript("window.sendID('" + id + "')");
+                if (commandOnReady == null) return;
+                engine.executeScript(commandOnReady);
             }
         });
     }

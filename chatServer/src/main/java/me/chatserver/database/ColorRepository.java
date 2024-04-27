@@ -1,13 +1,9 @@
-package me.chatserver.repositories;
+package me.chatserver.database;
 
 import me.chatserver.entities.Color;
-import me.chatserver.entities.User;
-import me.chatserver.repositories.templates.CountAvailableColors;
-import me.chatserver.repositories.templates.FindUserByUserName;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

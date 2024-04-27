@@ -60,7 +60,7 @@ export class RegisterService {
 		// @ts-ignore
 		window.javaConnector.setID(message[1])
 		// @ts-ignore
-		window.javaConnector.switchPage("main")
+		window.javaConnector.switchPage("main", null)
 	}
 
 }
