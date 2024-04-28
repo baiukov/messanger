@@ -4,7 +4,6 @@ import { LoggerModule } from './logger/logger.module.js'
 import { MessengerModule } from './messenger/messenger.module.js'
 import { NotificationsModule } from './notifications/notifications.module.js'
 import { RegisterModule } from './register/register.module.js'
-import { log } from './utils/log.js'
 
 export class App {
 
@@ -18,7 +17,7 @@ export class App {
 
 	private static events: Record<string, Function[]> = {}
 
-	private static serverEvents: Record<string, Function> = {}
+	private static serverEvents: Record<string, Function[]> = {}
 
 	public static id: string;
 
@@ -32,7 +31,7 @@ export class App {
 
 	public static emit = (eventName: string, data: any) => {
 		Object.keys(this.events).forEach((key: string) => {
-			log([key, eventName,  key === eventName].toString())
+			// log([key, eventName,  key === eventName].toString())
 			if (key === eventName) {
 				this.events[key].forEach((event) => {
 					event(data)
@@ -48,13 +47,19 @@ export class App {
 		Object.keys(this.serverEvents).forEach((key: string) => {
 			// App.emitClient(Events.LOG, [dataStr, eventName, key, eventName === key])
 			if (key === eventName) {
-				this.serverEvents[key](data)
+				this.serverEvents[key].forEach((event) => {
+					event(data)
+				})
 			}
 		})
 	}
 
 	public static onClient = (eventName: string, event: Function) => {
-		this.serverEvents[eventName] = event 
+		if (!this.serverEvents[eventName]) {
+			this.serverEvents[eventName] = [event]
+			return
+		}
+		this.serverEvents[eventName].push(event) 
 	}
 
 	public static emitClient = (eventName: string, data: Array<any>) => {

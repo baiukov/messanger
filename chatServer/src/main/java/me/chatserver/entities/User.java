@@ -27,7 +27,7 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.LAZY,
             mappedBy = "sender")
-    private List<Message> sendedMessages;
+    private List<Message> sendMessages;
 
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -49,6 +49,8 @@ public class User {
     public String getLastName() { return this.lastName; }
     public String getPassword() { return this.password; }
     public Color getColor() { return this.color; }
+    public List<Message> getSentMessages() { return this.sendMessages; }
+    public List<Message> getReceivedMessages() { return this.receivedMessages; }
 
     public void setID(UUID id) { this.id = id.toString(); }
     public void setUserName(String userName) { this.userName = userName; }
@@ -56,4 +58,6 @@ public class User {
     public void setLastName(String secondName) { this.lastName = secondName; }
     public void setPassword(String password) { this.password = password; }
     public void setColor(Color color) { this.color = color; }
+    public void setSentMessages(List<Message> messages) { this.sendMessages = messages; }
+    public void setReceivedMessages(List<Message> messages) { this.receivedMessages = messages; }
 }

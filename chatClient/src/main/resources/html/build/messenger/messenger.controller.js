@@ -17,6 +17,9 @@ var MessengerController = /** @class */ (function () {
         App.onClient(Events.FETCHCOLOR, function (messsage) {
             _this.messengerService.setColor(messsage);
         });
+        App.onClient(Events.FETCHMESSAGES, function (message) {
+            _this.messengerService.showDialogues(message);
+        });
     }
     return MessengerController;
 }());

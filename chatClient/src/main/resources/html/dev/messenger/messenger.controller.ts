@@ -26,6 +26,10 @@ export class MessengerController {
 		App.onClient(Events.FETCHCOLOR, (messsage: string[]) => {
 			this.messengerService.setColor(messsage)
 		})
+
+		App.onClient(Events.FETCHMESSAGES, (message: string[]) => {
+			this.messengerService.showDialogues(message)
+		})
 	}
 
 }

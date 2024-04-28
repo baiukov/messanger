@@ -10,6 +10,8 @@ export class User {
 
 	private lastName: string | undefined
 
+	private color: string | undefined
+
 	private constructor() {
 
 	}
@@ -27,6 +29,7 @@ export class User {
 
 	public getLastName() { return this.lastName }
 
+	public getColor() { return this.color }
 
 
 	public setID(id: string) { this.id = id }
@@ -37,5 +40,6 @@ export class User {
 
 	public setLastName(lastName: string) { this.lastName = lastName }
 
+	public setColor(color: string) { this.color = color}
 
 }

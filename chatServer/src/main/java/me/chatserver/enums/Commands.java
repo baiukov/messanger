@@ -8,4 +8,6 @@ public class Commands {
     public static String FETCHPARTNERDATA = "FETCHPARTNERDATA";
     public static String SEND = "SEND";
 
+    public static String FETCHMESSAGES = "FETCHMESSAGES";
+
 }

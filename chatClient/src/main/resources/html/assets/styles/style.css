@@ -324,4 +324,47 @@ input[id=user] {
 
 .message {
 	padding-left: 60px;
+	padding-bottom: 5px;
+}
+
+.message-with-avatar {
+	padding-top: 5px;
+}
+
+.message-box {
+	border-top: 2px solid black;
+	padding: 5px 25px 10px 20px;
+	background-color: #dddddd;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.message-box:hover {
+	filter: brightness(.95);
+	cursor: pointer;
+}
+
+.unread {
+	background-color: #909ab4cc;
+}
+
+.unread-amount {
+	height: 16px;
+	width: 16px;
+	background-color: #FF3F3F;
+	border-radius: 999px;
+	font-size: 8pt;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-family: "Inter", "sans-serif";
+}
+
+.short-message {
+	width: 420px;
+	height: 21px;
+	overflow-x: hidden;
+	overflow-y: hidden;
 }

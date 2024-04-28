@@ -13,6 +13,9 @@ var DialogueController = /** @class */ (function () {
         App.on(Events.SETID, function (id) {
             _this.dialogueService.setID(id);
         });
+        App.onClient(Events.FETCHMESSAGES, function (message) {
+            _this.dialogueService.showMessages(message);
+        });
     }
     return DialogueController;
 }());

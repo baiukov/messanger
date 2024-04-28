@@ -9,6 +9,9 @@ import me.chatserver.enums.Events;
 import me.chatserver.database.ColorRepository;
 import me.chatserver.database.UserRepository;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AppService {
@@ -109,7 +112,13 @@ public class AppService {
         User sender = userRepository.getById(senderID);
         String receiverID = data[2];
         User receiver = userRepository.getById(receiverID);
-        String messageText = data[3];
+        StringBuilder sb = new StringBuilder();
+        String delimiter = "";
+        for (int i = 3; i < data.length; i++) {
+            sb.append(delimiter).append(data[i]);
+            delimiter = " ";
+        }
+        String messageText = sb.toString();
 
         Message message = new Message();
         message.setSender(sender);
@@ -117,6 +126,27 @@ public class AppService {
         message.setMessage(messageText);
         message.setIsRead(false);
         messageRepository.save(message);
+    }
+
+    public String getMessages(String[] args) {
+        if (args.length < 2) return null;
+        String id = args[1];
+        List<Object[]> rawMessages = messageRepository.getMessagesByUserID(id);
+        StringBuilder sb = new StringBuilder();
+        String del = " ";
+        for (Object[] messageObject : rawMessages) {
+            if (messageObject.length < 4) continue;
+            String messageID = (String) messageObject[0];
+            String senderID = (String) messageObject[1];
+            String message = ((String) messageObject[2]).replaceAll(" ", "/+");
+            Timestamp createdAt = (Timestamp) messageObject[3];
+            sb.append(del).append(messageID)
+                .append(del).append(senderID)
+                .append(del).append(message)
+                .append(del).append(createdAt);
+        }
+        System.out.println(sb);
+        return sb.toString();
     }
 
     public String getUserFullName(String[] data) {

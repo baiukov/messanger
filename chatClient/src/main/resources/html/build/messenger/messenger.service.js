@@ -64,8 +64,11 @@ var MessengerService = /** @class */ (function () {
             color = message[1];
         }
         var hex = "#" + color.toLowerCase();
+        User.getUser().setColor(hex);
         log(hex);
         $("#avatar").css("background-color", hex);
+    };
+    MessengerService.prototype.showDialogues = function (message) {
     };
     return MessengerService;
 }());

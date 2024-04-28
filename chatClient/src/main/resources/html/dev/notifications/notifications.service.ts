@@ -44,4 +44,8 @@ export class NotificationsService {
 		this.show(message);
 	}
 
+	public showDialogues(message: string[]) {
+		
+	}
+
 }

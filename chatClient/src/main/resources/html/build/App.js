@@ -4,7 +4,6 @@ import { LoggerModule } from './logger/logger.module.js';
 import { MessengerModule } from './messenger/messenger.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
 import { RegisterModule } from './register/register.module.js';
-import { log } from './utils/log.js';
 var App = /** @class */ (function () {
     function App() {
         new RegisterModule();
@@ -26,7 +25,7 @@ var App = /** @class */ (function () {
     };
     App.emit = function (eventName, data) {
         Object.keys(_a.events).forEach(function (key) {
-            log([key, eventName, key === eventName].toString());
+            // log([key, eventName,  key === eventName].toString())
             if (key === eventName) {
                 _a.events[key].forEach(function (event) {
                     event(data);
@@ -40,12 +39,18 @@ var App = /** @class */ (function () {
         Object.keys(_a.serverEvents).forEach(function (key) {
             // App.emitClient(Events.LOG, [dataStr, eventName, key, eventName === key])
             if (key === eventName) {
-                _a.serverEvents[key](data);
+                _a.serverEvents[key].forEach(function (event) {
+                    event(data);
+                });
             }
         });
     };
     App.onClient = function (eventName, event) {
-        _a.serverEvents[eventName] = event;
+        if (!_a.serverEvents[eventName]) {
+            _a.serverEvents[eventName] = [event];
+            return;
+        }
+        _a.serverEvents[eventName].push(event);
     };
     App.emitClient = function (eventName, data) {
         var message = eventName + " ";

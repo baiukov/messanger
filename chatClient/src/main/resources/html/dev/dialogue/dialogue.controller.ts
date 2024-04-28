@@ -20,6 +20,10 @@ export class DialogueController {
 		App.on(Events.SETID, (id: string) => {
 			this.dialogueService.setID(id)
 		})
+
+		App.onClient(Events.FETCHMESSAGES, (message: string[]) => {
+			this.dialogueService.showMessages(message)
+		})
 	}
 
 }

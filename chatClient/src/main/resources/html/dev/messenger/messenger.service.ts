@@ -70,8 +70,13 @@ export class MessengerService {
 			color = message[1]
 		}
 		const hex = "#" + color.toLowerCase()
+		User.getUser().setColor(hex)
 		log(hex)
 		$("#avatar").css("background-color", hex)
+	}
+
+	public showDialogues(message: string[]) {
+		
 	}
 
 }
