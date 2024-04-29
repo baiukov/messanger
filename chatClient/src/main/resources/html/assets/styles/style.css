@@ -368,3 +368,8 @@ input[id=user] {
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
+
+.messages-box {
+	height: 100vh;
+	overflow-y: auto;
+}

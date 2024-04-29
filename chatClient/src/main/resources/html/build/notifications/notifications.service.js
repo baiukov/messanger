@@ -37,8 +37,6 @@ var NotificationsService = /** @class */ (function () {
         }
         this.show(message);
     };
-    NotificationsService.prototype.showDialogues = function (message) {
-    };
     return NotificationsService;
 }());
 export { NotificationsService };

@@ -2,13 +2,16 @@ package me.chatserver.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import me.chatserver.database.MessageRepository;
+import me.chatserver.database.RelationsRepository;
 import me.chatserver.entities.Color;
 import me.chatserver.entities.Message;
+import me.chatserver.entities.Relation;
 import me.chatserver.entities.User;
 import me.chatserver.enums.Events;
 import me.chatserver.database.ColorRepository;
 import me.chatserver.database.UserRepository;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +24,8 @@ public class AppService {
     private final UserRepository userRepository = new UserRepository();
 
     private final MessageRepository messageRepository = new MessageRepository();
+
+    private final RelationsRepository relationsRepository = new RelationsRepository();
 
     private AppService() {}
 
@@ -112,6 +117,15 @@ public class AppService {
         User sender = userRepository.getById(senderID);
         String receiverID = data[2];
         User receiver = userRepository.getById(receiverID);
+
+        boolean isRelation = !relationsRepository.getByUsers(senderID, receiverID).isEmpty();
+        if (!isRelation) {
+            Relation relation = new Relation();
+            relation.setUser1(sender);
+            relation.setUser2(receiver);
+            relationsRepository.save(relation);
+        }
+
         StringBuilder sb = new StringBuilder();
         String delimiter = "";
         for (int i = 3; i < data.length; i++) {
@@ -129,9 +143,10 @@ public class AppService {
     }
 
     public String getMessages(String[] args) {
-        if (args.length < 2) return null;
+        if (args.length < 3) return null;
         String id = args[1];
-        List<Object[]> rawMessages = messageRepository.getMessagesByUserID(id);
+        String partnerID = args[2];
+        List<Object[]> rawMessages = messageRepository.getMessagesByUserID(id, partnerID);
         StringBuilder sb = new StringBuilder();
         String del = " ";
         for (Object[] messageObject : rawMessages) {
@@ -145,8 +160,46 @@ public class AppService {
                 .append(del).append(message)
                 .append(del).append(createdAt);
         }
-        System.out.println(sb);
         return sb.toString();
+    }
+
+    public String getDialogues(String[] data) {
+        if (data.length < 2) return null;
+        String id = data[1];
+
+        List<Relation> relations = relationsRepository.getByUser(id);
+        User user = userRepository.getById(id);
+
+        StringBuilder sb = new StringBuilder();
+        String del = " ";
+        for (Relation relation : relations) {
+            User user1 = relation.getUser1();
+            User user2 = relation.getUser2();
+            User partner = user.equals(user1) ? user2 : user1;
+
+            String partnerID = partner.getID();
+            System.out.println(partnerID);
+            String lastMessage = messageRepository.getLastMessagesByUsers(id, partnerID).get(0);
+
+            BigInteger amount = messageRepository.getAmountUnreadMessages(id, partnerID).get(0);
+
+            sb.append(del).append(partnerID)
+                    .append(del).append(partner.getFirstName())
+                    .append(del).append(partner.getLastName())
+                    .append(del).append(partner.getColor().getHexcode())
+                    .append(del).append(lastMessage.replaceAll(" ", "/+"))
+                    .append(del).append(amount);
+        }
+
+        return sb.toString();
+    }
+
+    public void readMessages(String[] args) {
+        if (args.length < 3) return;
+        String id = args[1];
+        String partnerID = args[2];
+
+        messageRepository.setMessagesRead(id, partnerID);
     }
 
     public String getUserFullName(String[] data) {

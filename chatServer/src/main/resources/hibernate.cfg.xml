@@ -13,5 +13,6 @@
         <mapping class="me.chatserver.entities.User"/>
         <mapping class="me.chatserver.entities.Color"/>
         <mapping class="me.chatserver.entities.Message"/>
+        <mapping class="me.chatserver.entities.Relation"/>
     </session-factory>
 </hibernate-configuration>

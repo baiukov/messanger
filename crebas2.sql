@@ -59,7 +59,6 @@ create table messages
 create table user_relations
 (
    id                   varchar(100) not null  comment '',
-   relation_id          varchar(100) not null  comment '',
    user_1               varchar(100) not null  comment '',
    user_2               varchar(100) not null  comment '',
    is_pinned            smallint not null default false  comment '',

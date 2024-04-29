@@ -1,7 +1,8 @@
 import { App } from '../App.js'
 import { Events } from '../enums/Events.enum.js'
 import { log } from '../utils/log.js'
-import { User } from './User.js'
+import { secToMs } from '../utils/secToMs.js'
+import { LocalUser } from './LocalUser.js'
 import { MessengerView } from './messenger.view.js'
 
 export class MessengerService {
@@ -20,10 +21,17 @@ export class MessengerService {
 			App.emitClient(Events.FETCHUSERS, [val])
 		})
 
+		setInterval(() => {
+			const id = LocalUser.getUser().getID()
+			if (id) {
+				App.emitClient(Events.FETCHDIALOGUES, [LocalUser.getUser().getID()])
+			}
+		}, secToMs(0.5))
+
 	}
 
 	public fetchData(id: string) {
-		User.getUser().setID(id)
+		LocalUser.getUser().setID(id)
 		App.emitClient(Events.FETCHNAME, [id])
 		App.emitClient(Events.FETCHCOLOR, [id])
 	}
@@ -31,7 +39,7 @@ export class MessengerService {
 	public setFullName(message: string[]) {
 		let firstName: string
 		let lastName: string
-		const user = User.getUser();
+		const user = LocalUser.getUser();
 		if (message.length < 3) {
 			firstName = "Unknown"
 		  lastName = "Unknown"
@@ -47,17 +55,18 @@ export class MessengerService {
 	}
 
 	public showUsers(message: string[]) {
-		log(message.toString())
 		for (let i = 1; i < message.length; i += 3) {
 			const name = message[i]
 			const surname = message[i + 1]
-			const id = message[i + 2]
+			const partnerID = message[i + 2]
 			const box = this.view.getUserBox(name, surname)
+			const userID = LocalUser.getUser().getID() || ''
 			$(box).click(() => {
+				log([Events.READMESSAGES, userID, partnerID].toString())
+				App.emitClient(Events.READMESSAGES, [userID, partnerID])
 				// @ts-ignore
-				window.javaConnector.goToDialogue(id)
+				window.javaConnector.goToDialogue(partnerID)
 			})
-			log($(box).text())
 			$(".user-list").append(box)
 		}
 	} 
@@ -70,13 +79,32 @@ export class MessengerService {
 			color = message[1]
 		}
 		const hex = "#" + color.toLowerCase()
-		User.getUser().setColor(hex)
-		log(hex)
+		LocalUser.getUser().setColor(hex)
 		$("#avatar").css("background-color", hex)
 	}
 
 	public showDialogues(message: string[]) {
-		
+		const messagesBox = $(".messages-box")
+		for (let i = 1; i < message.length; i += 6) {
+			const partnerID = message[i]
+			if ($(`#${partnerID}`).length) continue
+
+			const name = message[i + 1]
+			const surname = message[i + 2]
+			const partnerColor = message[i + 3]
+			const text = message[i + 4].replaceAll("/+", " ")
+			const unread = message[i + 5]
+			const hex = "#" + partnerColor.toLowerCase()
+			
+			const dialogue = this.view.getDialogue(hex, name, surname, text, parseInt(unread))
+			$(dialogue).attr("id", partnerID)
+			const id = LocalUser.getUser().getID()
+			$(dialogue).click(() => {
+				// @ts-ignore
+				window.javaConnector.goToDialogue(partnerID)
+			})	
+			$(messagesBox).append(dialogue)
+		}
 	}
 
 }

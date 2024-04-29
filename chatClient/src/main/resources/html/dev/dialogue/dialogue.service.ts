@@ -1,15 +1,16 @@
 import { App } from '../App.js'
 import { Events } from '../enums/Events.enum.js'
-import { User } from '../messenger/User.js'
+import { LocalUser } from '../messenger/LocalUser.js'
+import { Partner } from '../messenger/Partner.js'
 import { log } from '../utils/log.js'
 import { secToMs } from '../utils/secToMs.js'
 import { DialogueView } from './dialogue.view.js'
 
 export class DialogueService {
 
-	private partner: Record<string, any> = {}
+	private partner: Partner = Partner.getUser()
 
-	private user: Record<string, any> = User.getUser()
+	private user: LocalUser = LocalUser.getUser()
 
 	private view = new DialogueView()
 
@@ -17,7 +18,7 @@ export class DialogueService {
 		this.initListeners()
 
 		setInterval(() => {
-		App.emitClient(Events.FETCHMESSAGES, [this.user.getID().trim()])
+		App.emitClient(Events.FETCHMESSAGES, [this.user.getID(), this.partner.getID()])
 		}, secToMs(1))
 	}
 
@@ -30,12 +31,13 @@ export class DialogueService {
 		$(".send-box").on('submit', () => {
 			const message = $("#message").val()
 			if (!message) return;
-			App.emitClient(Events.SEND, [this.user.getID(), this.partner.id, message])
+			App.emitClient(Events.SEND, [this.user.getID(), this.partner.getID(), message])
 			return false;
 		})
 
 		$(".submit-send").click(() => {
 			$(".send-box").submit()
+			$("#message").val("")
 		})
 
 		$(".dialogue").scrollTop($(".dialogue").prop("scrollHeight"));
@@ -51,7 +53,7 @@ export class DialogueService {
 	}
 
 	public setID(id: string) {
-		this.user.id = id;
+		this.user.setID(id);
 	}
 
 	public setPartnerData(message: string[]) {
@@ -62,13 +64,16 @@ export class DialogueService {
 		const color = message[4]
 		const hex = "#" + color.toLowerCase()
 		const firstLetter = name.charAt(0).toUpperCase()
-		this.partner.id = id
-		this.partner.name = name
-		this.partner.surname = surname
-		this.partner.hex = hex
+		this.partner.setID(id)
+		this.partner.setFirstName(name)
+		this.partner.setLastName(surname)
+		this.partner.setColor(hex)
 		$("#partnerName").text(name + " " + surname)
 		$("#partnersAvatar").css("background-color", hex)
-		$("#partnersFirstLetter").text(firstLetter)
+		$("#partnersFirstLetter").text(firstLetter) 
+		// @ts-ignore
+		window.javaConnector.receiveMessage("AFTERCLIENT")
+		App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id])
 	}
 
 	public showMessages(message: string[]) {
@@ -84,9 +89,9 @@ export class DialogueService {
 			
 			const isSameSender = i > 1 && message[i - 4] === senderID
 			const isUserSender = this.user.getID() === senderID
-			const color = isUserSender ? this.user.getColor() : this.partner.hex
+			const color = isUserSender ? this.user.getColor() : this.partner.getColor()
 			const name = isUserSender ? this.user.getFirstName() + " " + this.user.getLastName() 
-				: this.partner.name + " " + this.partner.surname
+				: this.partner.getFirstName() + " " + this.partner.getLastName()
 
 			const msg = text.replaceAll("/+", " ")
 			const date = new Date(dateStr + " " + timeStr)
@@ -97,7 +102,7 @@ export class DialogueService {
 			// @ts-ignore
 			log(msg)
 
-			const box = !isSameSender || isLongerThanFiveMinutes ? this.view.getMessageWithTitle(color, name, msg) : this.view.getMessage(msg)
+			const box = !isSameSender || isLongerThanFiveMinutes ? this.view.getMessageWithTitle(color || "", name, msg) : this.view.getMessage(msg)
 			$(box).attr("id", messageID)
 			$(dialogue).append(box)
 		}

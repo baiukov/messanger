@@ -34,14 +34,14 @@ public class MessageRouter {
     }
 
     public void getID() {
-        System.out.println("toget " + id);
+//        System.out.println("toget " + id);
         Platform.runLater(() -> {
             engine.executeScript("window.sendID('" + id + "')");
         });
     }
 
     public void setID(String id) {
-        System.out.println(id);
+//        System.out.println(id);
         this.id = id;
     }
 

@@ -1,12 +1,6 @@
 var User = /** @class */ (function () {
     function User() {
     }
-    User.getUser = function () {
-        if (!User.user) {
-            User.user = new User();
-        }
-        return User.user;
-    };
     User.prototype.getID = function () { return this.id; };
     User.prototype.getUserName = function () { return this.userName; };
     User.prototype.getFirstName = function () { return this.firstName; };

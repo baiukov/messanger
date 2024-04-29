@@ -15,4 +15,6 @@ export var Events;
     Events["FETCHPARTNERDATA"] = "FETCHPARTNERDATA";
     Events["SEND"] = "SEND";
     Events["FETCHMESSAGES"] = "FETCHMESSAGES";
+    Events["FETCHDIALOGUES"] = "FETCHDIALOGUES";
+    Events["READMESSAGES"] = "READMESSAGES";
 })(Events || (Events = {}));

@@ -3,7 +3,6 @@ import { Events } from '../enums/Events.enum.js';
 var MessengerController = /** @class */ (function () {
     function MessengerController(messengerSerice) {
         var _this = this;
-        console.log(1);
         this.messengerService = messengerSerice;
         App.on(Events.SETID, function (id) {
             _this.messengerService.fetchData(id);
@@ -17,7 +16,7 @@ var MessengerController = /** @class */ (function () {
         App.onClient(Events.FETCHCOLOR, function (messsage) {
             _this.messengerService.setColor(messsage);
         });
-        App.onClient(Events.FETCHMESSAGES, function (message) {
+        App.onClient(Events.FETCHDIALOGUES, function (message) {
             _this.messengerService.showDialogues(message);
         });
     }

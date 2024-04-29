@@ -1,6 +1,4 @@
-export class User {
-
-	private static user: User
+export abstract class User {
 
 	private id: string | undefined
 
@@ -12,13 +10,8 @@ export class User {
 
 	private color: string | undefined
 
-	private constructor() {
+	public constructor() {
 
-	}
-
-	public static getUser() {
-		if (!User.user) { User.user = new User() }
-		return User.user;
 	}
 
 	public getID() { return this.id }

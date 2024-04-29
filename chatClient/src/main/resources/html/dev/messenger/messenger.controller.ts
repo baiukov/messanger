@@ -8,7 +8,6 @@ export class MessengerController {
 
 	constructor(messengerSerice: MessengerService) {
 		
-		console.log(1)
 		this.messengerService = messengerSerice;
 
 		App.on(Events.SETID, (id: string) => {
@@ -27,7 +26,7 @@ export class MessengerController {
 			this.messengerService.setColor(messsage)
 		})
 
-		App.onClient(Events.FETCHMESSAGES, (message: string[]) => {
+		App.onClient(Events.FETCHDIALOGUES, (message: string[]) => {
 			this.messengerService.showDialogues(message)
 		})
 	}

@@ -26,7 +26,9 @@ public class CommandController {
                 new FetchColor(),
                 new FetchPartnerData(),
                 new Send(),
-                new FetchMessages()
+                new FetchMessages(),
+                new FetchDialogues(),
+                new ReadMessages()
         ));
     }
 

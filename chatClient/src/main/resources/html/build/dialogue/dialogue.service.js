@@ -1,18 +1,19 @@
 import { App } from '../App.js';
 import { Events } from '../enums/Events.enum.js';
-import { User } from '../messenger/User.js';
+import { LocalUser } from '../messenger/LocalUser.js';
+import { Partner } from '../messenger/Partner.js';
 import { log } from '../utils/log.js';
 import { secToMs } from '../utils/secToMs.js';
 import { DialogueView } from './dialogue.view.js';
 var DialogueService = /** @class */ (function () {
     function DialogueService() {
         var _this = this;
-        this.partner = {};
-        this.user = User.getUser();
+        this.partner = Partner.getUser();
+        this.user = LocalUser.getUser();
         this.view = new DialogueView();
         this.initListeners();
         setInterval(function () {
-            App.emitClient(Events.FETCHMESSAGES, [_this.user.getID().trim()]);
+            App.emitClient(Events.FETCHMESSAGES, [_this.user.getID(), _this.partner.getID()]);
         }, secToMs(1));
     }
     DialogueService.prototype.initListeners = function () {
@@ -25,11 +26,12 @@ var DialogueService = /** @class */ (function () {
             var message = $("#message").val();
             if (!message)
                 return;
-            App.emitClient(Events.SEND, [_this.user.getID(), _this.partner.id, message]);
+            App.emitClient(Events.SEND, [_this.user.getID(), _this.partner.getID(), message]);
             return false;
         });
         $(".submit-send").click(function () {
             $(".send-box").submit();
+            $("#message").val("");
         });
         $(".dialogue").scrollTop($(".dialogue").prop("scrollHeight"));
         $(".dialogue").css("scroll-behavior", "smooth");
@@ -42,7 +44,7 @@ var DialogueService = /** @class */ (function () {
         });
     };
     DialogueService.prototype.setID = function (id) {
-        this.user.id = id;
+        this.user.setID(id);
     };
     DialogueService.prototype.setPartnerData = function (message) {
         if (message.length < 4)
@@ -53,13 +55,16 @@ var DialogueService = /** @class */ (function () {
         var color = message[4];
         var hex = "#" + color.toLowerCase();
         var firstLetter = name.charAt(0).toUpperCase();
-        this.partner.id = id;
-        this.partner.name = name;
-        this.partner.surname = surname;
-        this.partner.hex = hex;
+        this.partner.setID(id);
+        this.partner.setFirstName(name);
+        this.partner.setLastName(surname);
+        this.partner.setColor(hex);
         $("#partnerName").text(name + " " + surname);
         $("#partnersAvatar").css("background-color", hex);
         $("#partnersFirstLetter").text(firstLetter);
+        // @ts-ignore
+        window.javaConnector.receiveMessage("AFTERCLIENT");
+        App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id]);
     };
     DialogueService.prototype.showMessages = function (message) {
         var dialogue = $(".messages-wrapper");
@@ -73,9 +78,9 @@ var DialogueService = /** @class */ (function () {
             var timeStr = message[i + 4];
             var isSameSender = i > 1 && message[i - 4] === senderID;
             var isUserSender = this.user.getID() === senderID;
-            var color = isUserSender ? this.user.getColor() : this.partner.hex;
+            var color = isUserSender ? this.user.getColor() : this.partner.getColor();
             var name_1 = isUserSender ? this.user.getFirstName() + " " + this.user.getLastName()
-                : this.partner.name + " " + this.partner.surname;
+                : this.partner.getFirstName() + " " + this.partner.getLastName();
             var msg = text.replaceAll("/+", " ");
             var date = new Date(dateStr + " " + timeStr);
             var lastDate = i > 1 ? new Date(message[i - 2] + " " + message[i - 1]) : null;
@@ -83,7 +88,7 @@ var DialogueService = /** @class */ (function () {
             var isLongerThanFiveMinutes = lastDate && (date - lastDate) / 60 / 1000 >= 5;
             // @ts-ignore
             log(msg);
-            var box = !isSameSender || isLongerThanFiveMinutes ? this.view.getMessageWithTitle(color, name_1, msg) : this.view.getMessage(msg);
+            var box = !isSameSender || isLongerThanFiveMinutes ? this.view.getMessageWithTitle(color || "", name_1, msg) : this.view.getMessage(msg);
             $(box).attr("id", messageID);
             $(dialogue).append(box);
         }

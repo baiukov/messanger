@@ -1,7 +1,8 @@
 import { App } from '../App.js';
 import { Events } from '../enums/Events.enum.js';
 import { log } from '../utils/log.js';
-import { User } from './User.js';
+import { secToMs } from '../utils/secToMs.js';
+import { LocalUser } from './LocalUser.js';
 import { MessengerView } from './messenger.view.js';
 var MessengerService = /** @class */ (function () {
     function MessengerService() {
@@ -14,16 +15,22 @@ var MessengerService = /** @class */ (function () {
             $(".user-list").empty();
             App.emitClient(Events.FETCHUSERS, [val]);
         });
+        setInterval(function () {
+            var id = LocalUser.getUser().getID();
+            if (id) {
+                App.emitClient(Events.FETCHDIALOGUES, [LocalUser.getUser().getID()]);
+            }
+        }, secToMs(0.5));
     };
     MessengerService.prototype.fetchData = function (id) {
-        User.getUser().setID(id);
+        LocalUser.getUser().setID(id);
         App.emitClient(Events.FETCHNAME, [id]);
         App.emitClient(Events.FETCHCOLOR, [id]);
     };
     MessengerService.prototype.setFullName = function (message) {
         var firstName;
         var lastName;
-        var user = User.getUser();
+        var user = LocalUser.getUser();
         if (message.length < 3) {
             firstName = "Unknown";
             lastName = "Unknown";
@@ -37,17 +44,18 @@ var MessengerService = /** @class */ (function () {
         $("#firstLetter").text(firstName.charAt(0).toUpperCase());
     };
     MessengerService.prototype.showUsers = function (message) {
-        log(message.toString());
         var _loop_1 = function (i) {
             var name_1 = message[i];
             var surname = message[i + 1];
-            var id = message[i + 2];
+            var partnerID = message[i + 2];
             var box = this_1.view.getUserBox(name_1, surname);
+            var userID = LocalUser.getUser().getID() || '';
             $(box).click(function () {
+                log([Events.READMESSAGES, userID, partnerID].toString());
+                App.emitClient(Events.READMESSAGES, [userID, partnerID]);
                 // @ts-ignore
-                window.javaConnector.goToDialogue(id);
+                window.javaConnector.goToDialogue(partnerID);
             });
-            log($(box).text());
             $(".user-list").append(box);
         };
         var this_1 = this;
@@ -64,11 +72,34 @@ var MessengerService = /** @class */ (function () {
             color = message[1];
         }
         var hex = "#" + color.toLowerCase();
-        User.getUser().setColor(hex);
-        log(hex);
+        LocalUser.getUser().setColor(hex);
         $("#avatar").css("background-color", hex);
     };
     MessengerService.prototype.showDialogues = function (message) {
+        var messagesBox = $(".messages-box");
+        var _loop_2 = function (i) {
+            var partnerID = message[i];
+            if ($("#".concat(partnerID)).length)
+                return "continue";
+            var name_2 = message[i + 1];
+            var surname = message[i + 2];
+            var partnerColor = message[i + 3];
+            var text = message[i + 4].replaceAll("/+", " ");
+            var unread = message[i + 5];
+            var hex = "#" + partnerColor.toLowerCase();
+            var dialogue = this_2.view.getDialogue(hex, name_2, surname, text, parseInt(unread));
+            $(dialogue).attr("id", partnerID);
+            var id = LocalUser.getUser().getID();
+            $(dialogue).click(function () {
+                // @ts-ignore
+                window.javaConnector.goToDialogue(partnerID);
+            });
+            $(messagesBox).append(dialogue);
+        };
+        var this_2 = this;
+        for (var i = 1; i < message.length; i += 6) {
+            _loop_2(i);
+        }
     };
     return MessengerService;
 }());

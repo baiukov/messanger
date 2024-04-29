@@ -60,4 +60,8 @@ public class User {
     public void setColor(Color color) { this.color = color; }
     public void setSentMessages(List<Message> messages) { this.sendMessages = messages; }
     public void setReceivedMessages(List<Message> messages) { this.receivedMessages = messages; }
+
+    public boolean equals(User user) {
+        return this.userName.equals(user.getUserName());
+    }
 }
