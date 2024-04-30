@@ -1,3 +1,6 @@
+import { App } from '../App.js';
+import { Events } from '../enums/Events.enum.js';
+import { log } from '../utils/log.js';
 var MessengerView = /** @class */ (function () {
     function MessengerView() {
     }
@@ -44,6 +47,29 @@ var MessengerView = /** @class */ (function () {
             $(messageBox).append(unreadBox);
         }
         return messageBox;
+    };
+    MessengerView.prototype.getRelationBox = function (userID, partnerID, isAlreadyPinned) {
+        var box = document.createElement("div");
+        $(box).addClass("relations");
+        var pin = document.createElement("div");
+        $(pin).addClass("pin");
+        log(["ISPINNED???", isAlreadyPinned].toString());
+        $(pin).text(isAlreadyPinned ? "Unpin" : "Pin");
+        $(pin).click(function (event) {
+            App.emitClient(isAlreadyPinned ? Events.UNPIN : Events.PIN, [userID, partnerID]);
+            event.stopPropagation();
+            $(".messages-box").empty();
+        });
+        var block = document.createElement("div");
+        $(block).addClass("block");
+        $(block).text("Block");
+        $(block).click(function (event) {
+            App.emitClient(Events.BLOCK, [userID, partnerID]);
+            event.stopPropagation();
+            $(".messages-box").empty();
+        });
+        $(box).append(pin, block);
+        return box;
     };
     return MessengerView;
 }());

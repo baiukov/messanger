@@ -373,3 +373,31 @@ input[id=user] {
 	height: 100vh;
 	overflow-y: auto;
 }
+
+.relations {
+	position: absolute;
+	height: 45px;
+	width: 65px;
+	background-color: rgba(148, 161, 179, 0.4);
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+
+.pin, .block {
+	color: black;
+	font-family: "Inter", "sans-serif";
+	background-color: #C8CCDA;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	padding: 2px;
+	font-size: 11pt;
+}
+
+.pin:hover, .block:hover {
+	filter: brightness(.9);
+	cursor: pointer;
+	transition-duration: 0.4s;
+}

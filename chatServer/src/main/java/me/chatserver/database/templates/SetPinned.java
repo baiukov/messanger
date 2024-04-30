@@ -1,2 +1,6 @@
-package me.chatserver.database.templates;public class SetPinned {
+package me.chatserver.database.templates;
+
+import me.chatserver.database.SQLTemplate;
+
+public class SetPinned extends SQLTemplate {
 }

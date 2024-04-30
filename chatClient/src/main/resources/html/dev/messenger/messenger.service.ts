@@ -85,7 +85,7 @@ export class MessengerService {
 
 	public showDialogues(message: string[]) {
 		const messagesBox = $(".messages-box")
-		for (let i = 1; i < message.length; i += 6) {
+		for (let i = 1; i < message.length; i += 7) {
 			const partnerID = message[i]
 			if ($(`#${partnerID}`).length) continue
 
@@ -94,6 +94,8 @@ export class MessengerService {
 			const partnerColor = message[i + 3]
 			const text = message[i + 4].replaceAll("/+", " ")
 			const unread = message[i + 5]
+			const isPinned = message[i + 6] === "true"
+
 			const hex = "#" + partnerColor.toLowerCase()
 			
 			const dialogue = this.view.getDialogue(hex, name, surname, text, parseInt(unread))
@@ -103,6 +105,13 @@ export class MessengerService {
 				// @ts-ignore
 				window.javaConnector.goToDialogue(partnerID)
 			})	
+			$(dialogue).on('contextmenu', (event) => {
+				$(".relations").remove()
+				const relationBox = this.view.getRelationBox(id || "", partnerID, isPinned)
+				$(relationBox).css("margin-left", event.clientX - 20) 
+				$(dialogue).append(relationBox)
+				event.preventDefault()
+			})
 			$(messagesBox).append(dialogue)
 		}
 	}

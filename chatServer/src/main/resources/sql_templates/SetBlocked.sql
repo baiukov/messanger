@@ -1,0 +1,1 @@
+UPDATE Relation SET IS_BLOCKED = :isBlocked WHERE USER_1 = :userID AND USER_2 = :partnerID

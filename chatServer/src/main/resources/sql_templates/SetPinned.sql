@@ -1,0 +1,1 @@
+UPDATE Relation SET IS_PINNED = :isPinned WHERE USER_1 = :userID AND USER_2 = :partnerID

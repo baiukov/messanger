@@ -14,8 +14,10 @@ import me.chatserver.database.UserRepository;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AppService {
 
@@ -168,17 +170,21 @@ public class AppService {
         String id = data[1];
 
         List<Relation> relations = relationsRepository.getByUser(id);
+        List<Relation> sortedRelations = relations.stream()
+                .sorted(Comparator.comparing(Relation::getIsPinned).reversed())
+                .toList();
         User user = userRepository.getById(id);
 
         StringBuilder sb = new StringBuilder();
         String del = " ";
-        for (Relation relation : relations) {
+        for (Relation relation : sortedRelations) {
+            if (relation.getIsBlocked()) continue;
+
             User user1 = relation.getUser1();
             User user2 = relation.getUser2();
             User partner = user.equals(user1) ? user2 : user1;
 
             String partnerID = partner.getID();
-            System.out.println(partnerID);
             String lastMessage = messageRepository.getLastMessagesByUsers(id, partnerID).get(0);
 
             BigInteger amount = messageRepository.getAmountUnreadMessages(id, partnerID).get(0);
@@ -188,7 +194,8 @@ public class AppService {
                     .append(del).append(partner.getLastName())
                     .append(del).append(partner.getColor().getHexcode())
                     .append(del).append(lastMessage.replaceAll(" ", "/+"))
-                    .append(del).append(amount);
+                    .append(del).append(amount)
+                    .append(del).append(relation.getIsPinned());
         }
 
         return sb.toString();
@@ -200,6 +207,55 @@ public class AppService {
         String partnerID = args[2];
 
         messageRepository.setMessagesRead(id, partnerID);
+    }
+
+    public void block(String[] args) {
+        if (args.length < 3) return;
+        String userID = args[1];
+        String partnerID = args[2];
+
+        List<Relation> relations = relationsRepository.getByUsers(userID, partnerID);
+        if (relations.isEmpty()) {
+            Relation relation = new Relation();
+            User user = userRepository.getById(userID);
+            User partner = userRepository.getById(partnerID);
+            relation.setUser1(user);
+            relation.setUser2(partner);
+            relation.setIsBlocked(true);
+            relationsRepository.save(relation);
+            return;
+        }
+        relationsRepository.block(userID, partnerID, true);
+    }
+
+    public void pin(String[] args) {
+        if (args.length < 3) return;
+        String userID = args[1];
+        String partnerID = args[2];
+        this.pin(userID, partnerID, true);
+    }
+
+
+    public void unpin(String[] args) {
+        if (args.length < 3) return;
+        String userID = args[1];
+        String partnerID = args[2];
+        this.pin(userID, partnerID, false);
+    }
+
+    public void pin(String userID, String partnerID, boolean isPinned) {
+        List<Relation> relations = relationsRepository.getByUsers(userID, partnerID);
+        if (relations.isEmpty()) {
+            Relation relation = new Relation();
+            User user = userRepository.getById(userID);
+            User partner = userRepository.getById(partnerID);
+            relation.setUser1(user);
+            relation.setUser2(partner);
+            relation.setIsPinned(isPinned);
+            relationsRepository.save(relation);
+            return;
+        }
+        relationsRepository.pin(userID, partnerID, isPinned);
     }
 
     public String getUserFullName(String[] data) {

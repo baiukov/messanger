@@ -76,6 +76,7 @@ var MessengerService = /** @class */ (function () {
         $("#avatar").css("background-color", hex);
     };
     MessengerService.prototype.showDialogues = function (message) {
+        var _this = this;
         var messagesBox = $(".messages-box");
         var _loop_2 = function (i) {
             var partnerID = message[i];
@@ -86,6 +87,7 @@ var MessengerService = /** @class */ (function () {
             var partnerColor = message[i + 3];
             var text = message[i + 4].replaceAll("/+", " ");
             var unread = message[i + 5];
+            var isPinned = message[i + 6] === "true";
             var hex = "#" + partnerColor.toLowerCase();
             var dialogue = this_2.view.getDialogue(hex, name_2, surname, text, parseInt(unread));
             $(dialogue).attr("id", partnerID);
@@ -94,10 +96,17 @@ var MessengerService = /** @class */ (function () {
                 // @ts-ignore
                 window.javaConnector.goToDialogue(partnerID);
             });
+            $(dialogue).on('contextmenu', function (event) {
+                $(".relations").remove();
+                var relationBox = _this.view.getRelationBox(id || "", partnerID, isPinned);
+                $(relationBox).css("margin-left", event.clientX - 20);
+                $(dialogue).append(relationBox);
+                event.preventDefault();
+            });
             $(messagesBox).append(dialogue);
         };
         var this_2 = this;
-        for (var i = 1; i < message.length; i += 6) {
+        for (var i = 1; i < message.length; i += 7) {
             _loop_2(i);
         }
     };

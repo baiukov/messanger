@@ -17,4 +17,7 @@ export var Events;
     Events["FETCHMESSAGES"] = "FETCHMESSAGES";
     Events["FETCHDIALOGUES"] = "FETCHDIALOGUES";
     Events["READMESSAGES"] = "READMESSAGES";
+    Events["PIN"] = "PIN";
+    Events["UNPIN"] = "UNPIN";
+    Events["BLOCK"] = "BLOCK";
 })(Events || (Events = {}));

@@ -3,8 +3,8 @@ package me.chatserver.controllers.commands;
 import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
-public class Pin implements ICommand {
-    private final String name = Commands.PIN;
+public class Block implements ICommand {
+    private final String name = Commands.BLOCK;
 
     private final AppService appService = AppService.getAppService();
 
@@ -15,7 +15,7 @@ public class Pin implements ICommand {
 
     @Override
     public String execute(String[] args) {
-        appService.pin(args);
+        appService.block(args);
         return null;
     }
 }

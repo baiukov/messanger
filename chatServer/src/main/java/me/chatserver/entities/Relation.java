@@ -38,7 +38,7 @@ public class Relation {
 
     public boolean getIsPinned() { return isPinned; }
 
-    public boolean isBlocked() { return isBlocked; }
+    public boolean getIsBlocked() { return isBlocked; }
 
     public void setId(String id) { this.id = id; }
 

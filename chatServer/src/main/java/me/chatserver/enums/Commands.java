@@ -10,5 +10,8 @@ public class Commands {
     public static String FETCHMESSAGES = "FETCHMESSAGES";
     public static String FETCHDIALOGUES = "FETCHDIALOGUES";
     public static String READMESSAGES = "READMESSAGES";
+    public static String PIN = "PIN";
+    public static String UNPIN = "UNPIN";
+    public static String BLOCK = "BLOCK";
 
 }

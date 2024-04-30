@@ -28,7 +28,10 @@ public class CommandController {
                 new Send(),
                 new FetchMessages(),
                 new FetchDialogues(),
-                new ReadMessages()
+                new ReadMessages(),
+                new Pin(),
+                new Unpin(),
+                new Block()
         ));
     }
 

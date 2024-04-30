@@ -1,3 +1,7 @@
+import { App } from '../App.js'
+import { Events } from '../enums/Events.enum.js'
+import { log } from '../utils/log.js'
+
 export class MessengerView {
 
 	public getUserBox(name: string, surname: string) {
@@ -52,5 +56,29 @@ export class MessengerView {
 
 		return messageBox
 		
+	}
+
+	public getRelationBox(userID: string, partnerID: string, isAlreadyPinned: boolean) {
+		const box = document.createElement("div")
+		$(box).addClass("relations")
+		const pin = document.createElement("div")
+		$(pin).addClass("pin")
+		log(["ISPINNED???", isAlreadyPinned].toString())
+		$(pin).text(isAlreadyPinned ? "Unpin" : "Pin")
+		$(pin).click((event) => {
+			App.emitClient(isAlreadyPinned ? Events.UNPIN : Events.PIN, [userID, partnerID])
+			event.stopPropagation()
+			$(".messages-box").empty()
+		}) 
+		const block = document.createElement("div") 
+		$(block).addClass("block")
+		$(block).text("Block")
+		$(block).click((event) => {
+			App.emitClient(Events.BLOCK, [userID, partnerID])
+			event.stopPropagation()
+			$(".messages-box").empty()
+		})
+		$(box).append(pin, block)
+		return box
 	}
 }
