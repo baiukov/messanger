@@ -1,5 +1,6 @@
 package me.chatserver.database;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.entities.Color;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
@@ -9,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
+@Slf4j
 public class ColorRepository {
 
     private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
@@ -21,16 +23,21 @@ public class ColorRepository {
             List<Color> data = session.createQuery(criteria).getResultList();
             return data.size();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to get available amount of colours. Exception occurred: " + e);
         }
         return 0;
     }
 
     public Color getColor(int id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
             // pokusí se najít a vygenerovat entitu uživatele, pokud taková je, vrátí ji
             return session.get(Color.class, id);
+        } catch (Exception e) {
+          log.error("Unabel to get colour. Exception occurred: " + e);
+        } finally {
+            session.close();
         }
-        // každopadně nakonec relaci ukončí
+        return null;
     }
 }

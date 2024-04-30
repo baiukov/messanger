@@ -1,8 +1,10 @@
 package me.chatserver.controllers.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
+@Slf4j
 public class Send implements ICommand {
 
     private final String name = Commands.SEND;
@@ -17,7 +19,13 @@ public class Send implements ICommand {
     @Override
     public String execute(String[] args) {
         appService.sendMessage(args);
-        return Commands.SEND + " ";
+        log.info("Command " + name + " has been executed");
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

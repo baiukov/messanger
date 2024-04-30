@@ -27,19 +27,23 @@ export class MessengerService {
 			const val = $("#user").val()
 			$(".user-list").empty()
 			App.emitClient(Events.FETCHUSERS, [val])
+			log("User type in search field")
 		})
 
 		$(".profile-avatar").click((event) => {
 			$(".profile").css("display", "flex")
 			event.stopPropagation()
+			log("User clicked on profile avatar")
 		})
 
 		$(document.body).click(() => {
 			$(".profile").css("display", "none")
+			log("User clicked on body")
 		})
 
 		$(".profile").click((event) => {
 			event.stopPropagation()
+			log("User clicked on profile box")
 		})
 
 		$("#save").click((event) => {
@@ -47,6 +51,7 @@ export class MessengerService {
 			this.fetchData(LocalUser.getUser().getID() || "")
 			event.stopPropagation()
 			if (shouldClose) { $(".profile").css("display", "none") }
+			log("User clicked on save button in profile")
 			return false
 		})
 	}
@@ -77,6 +82,7 @@ export class MessengerService {
 		$("#bigFirstLetter").text(firstLetter)
 		$("#name").val(firstName)
 		$("#surname").val(lastName)
+		log(`User full name has been set. Name: ${firstName}, Last name: ${lastName}. First letter: ${firstLetter}`)
 	}
 
 	public update = () => {
@@ -109,6 +115,7 @@ export class MessengerService {
 		$("#newPassword").val("")
 		$("#passwordRepeat").val("")
 
+		log(`User successfully filled the form of profile updating, procceed to the server`)
 		App.emitClient(Events.UPDATE, [
 			LocalUser.getUser().getID(), 
 			name || "null", 
@@ -119,6 +126,7 @@ export class MessengerService {
 	}
 
 	public showUsers = (message: string[]) => {
+		log("User list in search will be updated with " + message.length + " user(-s)")
 		for (let i = 1; i < message.length; i += 3) {
 			const name = message[i]
 			const surname = message[i + 1]
@@ -146,10 +154,12 @@ export class MessengerService {
 		LocalUser.getUser().setColor(hex)
 		$("#avatar").css("background-color", hex)
 		$(".big-avatar").css("background-color", hex)
+		log("Colour for local user has been updated to " + hex)
 	}
 
 	public showDialogues = (message: string[]) => {
 		const messagesBox = $(".messages-box")
+		log(Math.floor(message.length / 7) + " dialogue(-s) will be shown for user")
 		for (let i = 1; i < message.length; i += 7) {
 			const partnerID = message[i]
 			if ($(`#${partnerID}`).length) continue
@@ -190,6 +200,7 @@ export class MessengerService {
 			delimiter = " "
 		} 
 		$(".error-text").text(error)
+		log("Error happened on profile updating " + error)
 	} 
 
 }

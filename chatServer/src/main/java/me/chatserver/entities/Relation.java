@@ -1,6 +1,7 @@
 package me.chatserver.entities;
 
 import javax.persistence.*;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 @Entity
@@ -49,4 +50,16 @@ public class Relation {
     public void setIsPinned(boolean isPinned) { this.isPinned = isPinned; }
 
     public void setIsBlocked(boolean isBlocked) { this.isBlocked = isBlocked; }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "ID: {0}, user1: {1}, user2: {2}, isPinned: {3}, isBlocked: {4}",
+                id,
+                user1,
+                user2,
+                isPinned,
+                isBlocked
+        );
+    }
 }

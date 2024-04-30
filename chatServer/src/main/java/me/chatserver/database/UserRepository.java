@@ -1,5 +1,6 @@
 package me.chatserver.database;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.database.templates.SetBlocked;
 import me.chatserver.database.templates.UpdateUser;
 import me.chatserver.entities.User;
@@ -13,27 +14,27 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
+@Slf4j
 public class UserRepository {
 
     private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
 
-    public String save(User user) {
+    public void save(User user) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
-        String generatedId = null;
         try {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
+            log.info("New user has been created " + user);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            log.error("Unable to save user. Transaction error happened: " + e);
         } finally {
             session.close();
         }
-        return generatedId;
     }
 
     public List<User> getByUserName(String userName) {
@@ -43,7 +44,7 @@ public class UserRepository {
             query.setParameter("userName", userName);
             return query.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to fetch user by username. Transaction error happened: " + e);
         }
         return null;
     }
@@ -54,10 +55,13 @@ public class UserRepository {
         try {
             // pokusí se najít a vygenerovat entitu uživatele, pokud taková je, vrátí ji
             return session.get(User.class, id);
+        } catch (Exception e) {
+            log.error("Unable to fetch user by id. Transaction error happened: " + e);
         } finally {
             // každopadně nakonec relaci ukončí
             session.close();
         }
+        return null;
     }
 
     public List<User> getUsersByStartsWith(String startsWith) {
@@ -69,7 +73,7 @@ public class UserRepository {
             query.setMaxResults(5);
             return query.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to fetch user by pattern. Transaction error happened: " + e);
         }
         return null;
     }
@@ -87,11 +91,13 @@ public class UserRepository {
                     .setParameter("password", password)
                     .executeUpdate();
             transaction.commit();
+            log.info("User " + id + " has been successfully updated. " +
+                    "New first name: " + name + "New last name " + surname);
         } catch (RuntimeException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; // or display error message
+            log.error("Unable to update user. Transaction error happened: " + e);
         } finally {
             session.close();
         }

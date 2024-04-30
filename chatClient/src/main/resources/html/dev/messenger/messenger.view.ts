@@ -7,6 +7,7 @@ export class MessengerView {
 	public getUserBox = (name: string, surname: string) => {
 		const box = document.createElement("div")
 		$(box).addClass("user-option").text(name + " " + surname)
+		log("User box has been created " + box)
 		return box;
 	}
 
@@ -54,8 +55,8 @@ export class MessengerView {
 			$(messageBox).append(unreadBox)	
 		}
 
+		log("Message box has been created " + messageBox)
 		return messageBox
-		
 	}
 
 	public getRelationBox = (userID: string, partnerID: string, isAlreadyPinned: boolean) => {
@@ -63,7 +64,6 @@ export class MessengerView {
 		$(box).addClass("relations")
 		const pin = document.createElement("div")
 		$(pin).addClass("pin")
-		log(["ISPINNED???", isAlreadyPinned].toString())
 		$(pin).text(isAlreadyPinned ? "Unpin" : "Pin")
 		$(pin).click((event) => {
 			App.emitClient(isAlreadyPinned ? Events.UNPIN : Events.PIN, [userID, partnerID])
@@ -79,6 +79,7 @@ export class MessengerView {
 			$(".messages-box").empty()
 		})
 		$(box).append(pin, block)
+		log("Relation dialogue menu has been created: " + box)
 		return box
 	}
 }

@@ -1,5 +1,6 @@
 package me.chatserver.services;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.database.SQLTemplate;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@Slf4j
 public class SQLTemplateService {
 
     private final String[] packagePaths = {"me.chatserver.database.templates"};
@@ -37,6 +39,7 @@ public class SQLTemplateService {
         for (Class<SQLTemplate> sqlTemplateClass : sqlTemplateClasses) {
             sqlMap.put(sqlTemplateClass, loadSqlTemplate(sqlTemplateClass));
         }
+        log.info("SQLTemplateService has been initialized with " + sqlMap.keySet().size() + " query(-es)");
     }
 
     private String loadSqlTemplate(final Class<? extends SQLTemplate> sqlTemplateClass) {

@@ -1,8 +1,10 @@
 package me.chatserver.controllers.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
+@Slf4j
 public class Unpin implements ICommand {
     private final String name = Commands.UNPIN;
 
@@ -16,6 +18,12 @@ public class Unpin implements ICommand {
     @Override
     public String execute(String[] args) {
         appService.unpin(args);
+        log.info("Command " + name + " has been executed");
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

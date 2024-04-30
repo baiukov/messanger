@@ -1,5 +1,6 @@
 import { App } from '../App.js'
 import { Events } from '../enums/Events.enum.js'
+import { log } from '../utils/log.js'
 
 export class RegisterService {
 
@@ -21,6 +22,7 @@ export class RegisterService {
 				return false
 			}
 
+			log("User filled login form successfully, proceed to the server")
 			App.emitClient(Events.LOGIN, [name, password] )
 			return false;
 		})
@@ -58,9 +60,11 @@ export class RegisterService {
 				return false
 			}
 
+			log("User filled register form successfully, proceed to the server")
 			App.emitClient(Events.REGISTER, [name, firstName, lastName, password] )
 			return false
 		})
+
 	}
 
 	public moveToMain = (message: string[]) => {
@@ -69,6 +73,7 @@ export class RegisterService {
 			return;
 		} 
 		App.id = message[1];
+		log("User will be redirected to the main page")
 		// @ts-ignore
 		window.javaConnector.setID(message[1])
 		// @ts-ignore

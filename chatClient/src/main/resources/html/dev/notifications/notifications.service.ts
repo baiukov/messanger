@@ -1,3 +1,4 @@
+import { log } from '../utils/log.js'
 import { secToMs } from '../utils/secToMs.js'
 
 /*
@@ -33,7 +34,7 @@ export class NotificationsService {
 		}
 
 		show(error)
-		//log(LogLevels.INFO, "Notification has been shown. Message: " + message)
+		log("Notification has been shown. Message: " + message)
 	}
 
 	public showError = (errorData: string[]) => {

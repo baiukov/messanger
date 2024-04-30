@@ -1,5 +1,6 @@
 package me.chatserver.database;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.database.templates.*;
 import me.chatserver.entities.Relation;
 import me.chatserver.services.SQLTemplateService;
@@ -11,6 +12,7 @@ import org.hibernate.query.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class RelationsRepository {
 
     private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
@@ -22,11 +24,12 @@ public class RelationsRepository {
             transaction = session.beginTransaction();
             session.save(relation);
             transaction.commit();
+            log.info("New relation has been created " + relation);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            log.error("Exception occurred on relation saving " + e);
         } finally {
             session.close();
         }
@@ -40,7 +43,7 @@ public class RelationsRepository {
             query.setParameter("user2", user2ID);
             return query.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to fetch relation by 2 users. Exception occurred " + e);
         }
         return new ArrayList<>();
     }
@@ -52,7 +55,7 @@ public class RelationsRepository {
             query.setParameter("id", id);
             return query.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to fetch relation for 1 user. Exception occurred " + e);
         }
         return new ArrayList<>();
     }
@@ -69,11 +72,12 @@ public class RelationsRepository {
                     .setParameter("isPinned", isPinned)
                     .executeUpdate();
             transaction.commit();
+            log.info("User " + userID + " successfully " + (isPinned ? "pinned" : "unpinned") + partnerID);
         } catch (RuntimeException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; // or display error message
+            log.error("Unable to " + (isPinned ? "pin" : "unpin") + " user. Exception occurred: " + e );
         } finally {
             session.close();
         }
@@ -91,11 +95,12 @@ public class RelationsRepository {
                     .setParameter("isBlocked", isBlocked)
                     .executeUpdate();
             transaction.commit();
+            log.info("User " + userID + " successfully " + (isBlocked ? "blocked" : "unblocked") + partnerID);
         } catch (RuntimeException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; // or display error message
+            log.error("Unable to " + (isBlocked ? "block" : "unblock") + " user. Exception occurred: " + e );
         } finally {
             session.close();
         }

@@ -1,3 +1,4 @@
+import { log } from '../utils/log.js'
 import { User } from './User.js'
 
 export class Partner extends User {
@@ -13,5 +14,6 @@ export class Partner extends User {
 
 	private constructor() {
 		super()
+		log("Partner has been initialized")
 	}
 }

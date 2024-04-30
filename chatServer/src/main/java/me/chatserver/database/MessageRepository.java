@@ -1,5 +1,6 @@
 package me.chatserver.database;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.database.templates.FindLastMessageByUsers;
 import me.chatserver.database.templates.FindMessagesByUser;
 import me.chatserver.database.templates.GetAmountUnreadMessages;
@@ -13,6 +14,7 @@ import org.hibernate.Transaction;
 import java.math.BigInteger;
 import java.util.List;
 
+@Slf4j
 public class MessageRepository {
 
     SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
@@ -24,11 +26,12 @@ public class MessageRepository {
             transaction = session.beginTransaction();
             session.save(message);
             transaction.commit();
+            log.info("New message has been created " + message);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            log.error("Unable to create message. Exception occurred " + e);
         } finally {
             session.close();
         }
@@ -42,7 +45,7 @@ public class MessageRepository {
                     .setParameter("partnerID", partnerID)
                     .list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to get messages by user id. Exception occurred: " + e);
         }
         return null;
     }
@@ -55,7 +58,7 @@ public class MessageRepository {
                     .setParameter("partnerID", partnerID)
                     .list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to get messages by 2 users. Exception occurred: " + e);
         }
         return null;
     }
@@ -68,7 +71,7 @@ public class MessageRepository {
                     .setParameter("partnerID", partnerID)
                     .list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Unable to get amount of unread messages. Exception occurred: " + e);
         }
         return null;
     }
@@ -84,11 +87,12 @@ public class MessageRepository {
                     .setParameter("partnerID", partnerID)
                     .executeUpdate();
             transaction.commit();
+            log.info("Message " + id + " has been set as read");
         } catch (RuntimeException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; // or display error message
+            log.error("Unable to set message " + id + " as read. Exception occurred: " + e);
         } finally {
             session.close();
         }

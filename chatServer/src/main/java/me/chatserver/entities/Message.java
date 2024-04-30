@@ -2,6 +2,7 @@ package me.chatserver.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -62,4 +63,15 @@ public class Message {
     public void setIsRead(boolean isRead) { this.isRead = isRead; }
 
     public void setCreatedAt(Timestamp timestamp) { this.createdAt = timestamp; }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "ID: {0}, sender: {1}, receiver: {2}, message: {3}",
+                id,
+                sender,
+                receiver,
+                message
+        );
+    }
 }

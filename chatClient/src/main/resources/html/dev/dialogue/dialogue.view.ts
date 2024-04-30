@@ -1,6 +1,6 @@
 export class DialogueView {
 
-	public getMessageWithTitle(color: string, fullName: string, message: string) {
+	public getMessageWithTitle = (color: string, fullName: string, message: string) => {
 		const messageBox = document.createElement("div")
 		$(messageBox).addClass("message-with-avatar")
 		const wrapper = document.createElement("div")
@@ -30,7 +30,7 @@ export class DialogueView {
 		return messageBox
 	}
 
-	public getMessage(message: string) {
+	public getMessage = (message: string) => {
 		const messageBox = document.createElement("div")
 		$(messageBox).addClass("message")
 		const text = document.createElement("p")

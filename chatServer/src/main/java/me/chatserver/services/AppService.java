@@ -1,6 +1,7 @@
 package me.chatserver.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.database.MessageRepository;
 import me.chatserver.database.RelationsRepository;
 import me.chatserver.entities.Color;
@@ -19,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class AppService {
 
     private static AppService appService;
@@ -29,7 +31,9 @@ public class AppService {
 
     private final RelationsRepository relationsRepository = new RelationsRepository();
 
-    private AppService() {}
+    private AppService() {
+        log.info("AppService has been successfully initialized");
+    }
 
     public static AppService getAppService() {
         if (appService == null) {
@@ -107,8 +111,8 @@ public class AppService {
         StringBuilder sb = new StringBuilder();
         for (User user : users) {
             sb.append(" ").append(user.getFirstName())
-                    .append(" ").append(user.getLastName())
-                    .append(" ").append(user.getID());
+                .append(" ").append(user.getLastName())
+                .append(" ").append(user.getID());
         }
         return sb.toString();
     }

@@ -1,6 +1,7 @@
 package me.chatserver.entities;
 
 import javax.persistence.*;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Entity
@@ -41,4 +42,14 @@ public class Color {
     public void setName(String name) { this.name = name; }
 
     public void setHexcode(String hexcode) { this.hexcode = hexcode; }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "ID: {0}, name: {1}, hexcode: {2}",
+                id,
+                name,
+                hexcode
+        );
+    }
 }

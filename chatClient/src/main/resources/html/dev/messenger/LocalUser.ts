@@ -1,3 +1,4 @@
+import { log } from '../utils/log.js'
 import { User } from './User.js'
 
 export class LocalUser extends User {
@@ -13,5 +14,6 @@ export class LocalUser extends User {
 
 	private constructor() {
 		super()
+		log("Local user has been initialized")
 	}
 }

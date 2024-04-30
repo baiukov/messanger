@@ -1,5 +1,6 @@
 package me.chatserver.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.controllers.commands.CommandController;
 
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @author Aleksei Baiukov
  * @version 30.03.2024
  */
+@Slf4j
 public class ClientHandler extends Thread {
     // uložení klienta
     private final Socket clientSocket;
@@ -23,9 +25,7 @@ public class ClientHandler extends Thread {
     // uložení streamu pro posílání zpráv
     private PrintWriter out;
 
-    private Map<String, Socket> clients = new HashMap<>();
-
-    private CommandController commandController = new CommandController(this);
+    private final CommandController commandController = new CommandController(this);
 
     // uložení kontrolleru komand
     /**
@@ -49,11 +49,11 @@ public class ClientHandler extends Thread {
             this.out = out;
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
+                log.debug("Received message from the client: " + inputLine);
                 commandController.onCommand(inputLine);
             }
         } catch (IOException e) {
-            System.out.println(e);
+            log.error("Exception occurred on client listening. " + e);
         }
     }
 
@@ -63,6 +63,7 @@ public class ClientHandler extends Thread {
      * @param message zpráva pro klienta
      */
     public void sendMessage(String message) {
+        log.debug("Message to client has been sent " + message);
         this.out.println(message);
     }
 }

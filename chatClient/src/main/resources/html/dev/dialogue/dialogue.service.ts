@@ -18,12 +18,15 @@ export class DialogueService {
 		this.initListeners()
 
 		setInterval(() => {
-		App.emitClient(Events.FETCHMESSAGES, [this.user.getID(), this.partner.getID()])
+			if (this.user.getID()) {
+				App.emitClient(Events.FETCHMESSAGES, [this.user.getID(), this.partner.getID()])
+			}
 		}, secToMs(1))
 	}
 
 	public initListeners = () => {
 		$(".back-button").click(() =>  {
+			log("Back button has been clicked. Redirecting to main page...")
 			//@ts-ignore
 			window.javaConnector.switchPage("main", null)
 		})
@@ -31,6 +34,7 @@ export class DialogueService {
 		$(".send-box").on('submit', () => {
 			const message = $("#message").val()
 			if (!message) return;
+			log("Send form has been submitted. Message to " + this.partner.getID() + " will proceed to the server. Message " + message)
 			App.emitClient(Events.SEND, [this.user.getID(), this.partner.getID(), message])
 			return false;
 		})
@@ -44,7 +48,8 @@ export class DialogueService {
 		$(".dialogue").css("scroll-behavior", "smooth")
 
 		$("#message").keypress((event) => {
-			if(event.which === 13 && !event.shiftKey) {
+			const enterButtonClickedEvent = 13;
+			if (event.which === enterButtonClickedEvent && !event.shiftKey) {
 					event.preventDefault()
 					$(".send-box").submit()
 					$("#message").val("")
@@ -54,6 +59,7 @@ export class DialogueService {
 
 	public setID = (id: string) => {
 		this.user.setID(id);
+		log("ID for local user has been set to " + id)
 	}
 
 	public setPartnerData = (message: string[]) => {
@@ -71,13 +77,13 @@ export class DialogueService {
 		$("#partnerName").text(name + " " + surname)
 		$("#partnersAvatar").css("background-color", hex)
 		$("#partnersFirstLetter").text(firstLetter) 
-		// @ts-ignore
-		window.javaConnector.receiveMessage("AFTERCLIENT")
+		log(`Partner data has been set. ID: ${id}, name: ${name}, surname: ${surname}, color: ${hex}`)
 		App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id])
 	}
 
 	public showMessages = (message: string[]) => {
 		const dialogue = $(".messages-wrapper")
+		log("Fetched messages with partner. Will be shown " + Math.floor(message.length / 5) + "message(-s)")
 		for (let i = 1; i < message.length; i += 5) {
 			const messageID = message[i]
 			if ($(`#${messageID}`).length) continue;

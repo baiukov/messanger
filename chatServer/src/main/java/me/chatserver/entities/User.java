@@ -1,6 +1,7 @@
 package me.chatserver.entities;
 
 import javax.persistence.*;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,4 +65,17 @@ public class User {
     public boolean equals(User user) {
         return this.userName.equals(user.getUserName());
     }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "ID: {0}, userName: {1}, first name: {2}, last name: {3}, color: {4}",
+                id,
+                userName,
+                firstName,
+                lastName,
+                color.getName()
+        );
+    }
+
 }
