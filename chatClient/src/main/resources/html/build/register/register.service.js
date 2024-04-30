@@ -8,6 +8,11 @@ var RegisterService = /** @class */ (function () {
                 var password = $("#password").val();
                 if (!name || !password)
                     return false;
+                var space = " ";
+                if (name.includes(space) || password.includes(space)) {
+                    App.emit(Events.NOTIFY, "Don't use spaces");
+                    return false;
+                }
                 App.emitClient(Events.LOGIN, [name, password]);
                 return false;
             });
@@ -22,6 +27,11 @@ var RegisterService = /** @class */ (function () {
                     return false;
                 }
                 ;
+                var space = " ";
+                if (firstName.includes(space) || lastName.includes(space) || password.includes(space)) {
+                    App.emit(Events.NOTIFY, "Don't use spaces");
+                    return false;
+                }
                 if (password != repeatPassword) {
                     App.emit(Events.NOTIFY, "Passwords don't match");
                     return false;
@@ -38,19 +48,19 @@ var RegisterService = /** @class */ (function () {
                 return false;
             });
         };
+        this.moveToMain = function (message) {
+            if (message.length < 2) {
+                App.emit(Events.NOTIFY, "Unknown error happened");
+                return;
+            }
+            App.id = message[1];
+            // @ts-ignore
+            window.javaConnector.setID(message[1]);
+            // @ts-ignore
+            window.javaConnector.switchPage("main", null);
+        };
         this.startListener();
     }
-    RegisterService.prototype.moveToMain = function (message) {
-        if (message.length < 2) {
-            App.emit(Events.NOTIFY, "Unknown error happened");
-            return;
-        }
-        App.id = message[1];
-        // @ts-ignore
-        window.javaConnector.setID(message[1]);
-        // @ts-ignore
-        window.javaConnector.switchPage("main", null);
-    };
     return RegisterService;
 }());
 export { RegisterService };

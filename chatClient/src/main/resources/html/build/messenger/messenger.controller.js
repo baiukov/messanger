@@ -19,6 +19,9 @@ var MessengerController = /** @class */ (function () {
         App.onClient(Events.FETCHDIALOGUES, function (message) {
             _this.messengerService.showDialogues(message);
         });
+        App.onClient(Events.ERROR, function (message) {
+            _this.messengerService.showProfileError(message);
+        });
     }
     return MessengerController;
 }());

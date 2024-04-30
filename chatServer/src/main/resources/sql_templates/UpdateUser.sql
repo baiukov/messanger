@@ -1,0 +1,1 @@
+UPDATE User SET FIRST_NAME = :name, LAST_NAME = :surname, PASSWORD = :password WHERE ID = :id

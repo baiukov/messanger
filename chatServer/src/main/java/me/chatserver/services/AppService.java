@@ -258,6 +258,33 @@ public class AppService {
         relationsRepository.pin(userID, partnerID, isPinned);
     }
 
+    public String update(String[] data) {
+        if (data.length < 5) {
+            return Events.ERROR + "1Fill the form properly";
+        }
+
+        String id = data[1];
+
+        User user = userRepository.getById(id);
+        String firstName = data[2].equals("null") ? user.getFirstName() : data[2] ;
+        String lastName = data[3].equals("null") ? user.getLastName() : data[3];
+        String passwordStr = data[4];
+
+        String password = passwordStr.equals("null") ? user.getPassword() : BCrypt.withDefaults()
+                .hashToString(12, passwordStr.toCharArray());
+
+        if (firstName == null || lastName == null || password == null) {
+            return Events.ERROR + "Fill the form properly";
+        }
+
+        if (password.length() < 6) {
+            return Events.ERROR + "Password doesnt contain 6 chars";
+        }
+
+        userRepository.update(id, firstName, lastName, password);
+        return null;
+    }
+
     public String getUserFullName(String[] data) {
         User user = getUser(data);
         if (user == null) {

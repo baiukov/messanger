@@ -11,15 +11,6 @@ export class MessengerService {
 
 	constructor() {
 		this.setListeners()
-	}
-
-	public setListeners() {
-
-		$("#user").keyup(() => {
-			const val = $("#user").val()
-			$(".user-list").empty()
-			App.emitClient(Events.FETCHUSERS, [val])
-		})
 
 		setInterval(() => {
 			const id = LocalUser.getUser().getID()
@@ -27,16 +18,46 @@ export class MessengerService {
 				App.emitClient(Events.FETCHDIALOGUES, [LocalUser.getUser().getID()])
 			}
 		}, secToMs(0.5))
-
 	}
 
-	public fetchData(id: string) {
+	public setListeners = () => {
+
+		$("#user").keyup(() => {
+			$(".profile").css("display", "none")
+			const val = $("#user").val()
+			$(".user-list").empty()
+			App.emitClient(Events.FETCHUSERS, [val])
+		})
+
+		$(".profile-avatar").click((event) => {
+			$(".profile").css("display", "flex")
+			event.stopPropagation()
+		})
+
+		$(document.body).click(() => {
+			$(".profile").css("display", "none")
+		})
+
+		$(".profile").click((event) => {
+			event.stopPropagation()
+		})
+
+		$("#save").click((event) => {
+			const shouldClose = this.update()
+			this.fetchData(LocalUser.getUser().getID() || "")
+			event.stopPropagation()
+			if (shouldClose) { $(".profile").css("display", "none") }
+			return false
+		})
+	}
+
+	public fetchData = (id: string) => {
 		LocalUser.getUser().setID(id)
 		App.emitClient(Events.FETCHNAME, [id])
 		App.emitClient(Events.FETCHCOLOR, [id])
 	}
 
-	public setFullName(message: string[]) {
+	public setFullName = (message: string[]) => {
 		let firstName: string
 		let lastName: string
 		const user = LocalUser.getUser();
@@ -51,10 +72,53 @@ export class MessengerService {
 		user.setFirstName(firstName)
 		user.setLastName(lastName)
 
-		$("#firstLetter").text(firstName.charAt(0).toUpperCase())
+		const firstLetter = firstName.charAt(0).toUpperCase()
+		$("#firstLetter").text(firstLetter)
+		$("#bigFirstLetter").text(firstLetter)
+		$("#name").val(firstName)
+		$("#surname").val(lastName)
 	}
 
-	public showUsers(message: string[]) {
+	public update = () => {
+		const currentPassword = $("#currentPassword").val()
+		
+		if (!currentPassword) {
+			this.showProfileError(["", "Type in your current password"])
+			return false
+		}
+
+		const newPassword = $("#newPassword").val() as string
+		const repeatPassword = $("#passwordRepeat").val() as string
+
+		if (newPassword && newPassword != repeatPassword) {
+			this.showProfileError(["", "Passwords does not match"])
+			return false
+		}
+
+		const name = $("#name").val() as string
+		const surname = $("#surname").val() as string
+
+		const space = " "
+		if (name.includes(space) || surname.includes(space) || newPassword.includes(space)) {
+			this.showProfileError(["", "Don't use spaces"])
+			return false
+		}
+
+		this.showProfileError(["", ""])
+		$("#currentPassword").val("")
+		$("#newPassword").val("")
+		$("#passwordRepeat").val("")
+
+		App.emitClient(Events.UPDATE, [
+			LocalUser.getUser().getID(), 
+			name || "null", 
+			surname || "null", 
+			newPassword || "null"
+		])
+		return true
+	}
+
+	public showUsers = (message: string[]) => {
 		for (let i = 1; i < message.length; i += 3) {
 			const name = message[i]
 			const surname = message[i + 1]
@@ -71,7 +135,7 @@ export class MessengerService {
 		}
 	} 
 
-	public setColor(message: string[]) {
+	public setColor = (message: string[]) => {
 		let color;
 		if (message.length < 2) {
 			color = "F2C4DE"
@@ -81,9 +145,10 @@ export class MessengerService {
 		const hex = "#" + color.toLowerCase()
 		LocalUser.getUser().setColor(hex)
 		$("#avatar").css("background-color", hex)
+		$(".big-avatar").css("background-color", hex)
 	}
 
-	public showDialogues(message: string[]) {
+	public showDialogues = (message: string[]) => {
 		const messagesBox = $(".messages-box")
 		for (let i = 1; i < message.length; i += 7) {
 			const partnerID = message[i]
@@ -110,10 +175,21 @@ export class MessengerService {
 				const relationBox = this.view.getRelationBox(id || "", partnerID, isPinned)
 				$(relationBox).css("margin-left", event.clientX - 20) 
 				$(dialogue).append(relationBox)
+				$(".profile").css("display", "none")
 				event.preventDefault()
 			})
 			$(messagesBox).append(dialogue)
 		}
 	}
+
+	public showProfileError = (message: string[]) => {
+		let error = "";
+		let delimiter = "";
+		for (let i = 1; i < message.length; i++) {
+			error += delimiter + message[i]
+			delimiter = " "
+		} 
+		$(".error-text").text(error)
+	} 
 
 }

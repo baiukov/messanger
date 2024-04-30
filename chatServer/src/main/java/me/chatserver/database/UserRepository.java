@@ -1,5 +1,7 @@
 package me.chatserver.database;
 
+import me.chatserver.database.templates.SetBlocked;
+import me.chatserver.database.templates.UpdateUser;
 import me.chatserver.entities.User;
 import me.chatserver.database.templates.FindUserByPattern;
 import me.chatserver.database.templates.FindUserByUserName;
@@ -70,5 +72,28 @@ public class UserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void update(String id, String name, String surname, String password) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            String hsql = sqlTemplateService.getSQL(UpdateUser.class);
+            session.createQuery( hsql )
+                    .setParameter("id", id)
+                    .setParameter("name", name)
+                    .setParameter("surname", surname)
+                    .setParameter("password", password)
+                    .executeUpdate();
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e; // or display error message
+        } finally {
+            session.close();
+        }
     }
 }

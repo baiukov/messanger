@@ -31,7 +31,8 @@ public class CommandController {
                 new ReadMessages(),
                 new Pin(),
                 new Unpin(),
-                new Block()
+                new Block(),
+                new Update()
         ));
     }
 

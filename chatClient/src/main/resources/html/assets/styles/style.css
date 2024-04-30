@@ -75,7 +75,8 @@ body {
 	align-items: center;
 	font-family: "Inter", sans-serif;
 	font-weight: lighter;
-	font-size: 16pt
+	font-size: 16pt;
+	z-index: 10;
 }
 
 .clickable-avatar:hover {
@@ -212,7 +213,7 @@ input[id=user] {
 	font-size: 10pt;
 }
 
-.error-pane {
+.main-error-pane, .error-pane {
 	position: absolute;
 	height: 18%;
 	width: 100%;
@@ -223,6 +224,25 @@ input[id=user] {
 	overflow: hidden;
 	font-family: "Inter", sans-serif;
 	font-size: 10pt;
+	z-index: 5;
+}
+
+.main-error-pane {
+	height: 12%;
+	width: 400px;
+	left: 0;
+	right: 0;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.error-text {
+	color: rgb(105, 19, 19);
+	font-family: "Inter",sans-serif;
+	font-weight: 600;
+	font-size: 8pt;
+	padding-top: 8px;
+	min-width: 60%;
 }
 
 .error {
@@ -400,4 +420,44 @@ input[id=user] {
 	filter: brightness(.9);
 	cursor: pointer;
 	transition-duration: 0.4s;
+}
+
+.profile {
+	position: absolute;
+	gap: 20px;
+	right: 0;
+	background-color: rgba(199, 203, 217, 0.85);
+	padding: 15px;
+	display: none;
+	transition-duration: 0.25s;
+	z-index: 2;
+}
+
+.big-avatar-wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.big-avatar {
+	border-radius: 999px;
+	background-color: rgba(0, 128, 0, 0.9);
+	width: 80px;
+	height: 80px;
+}
+
+.profile-updated {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.profile-button-wrapper {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px
+}
+
+#currentPassword {
+	margin-top: 10px;
 }

@@ -29,6 +29,10 @@ export class MessengerController {
 		App.onClient(Events.FETCHDIALOGUES, (message: string[]) => {
 			this.messengerService.showDialogues(message)
 		})
+
+		App.onClient(Events.ERROR, (message: string[]) => {
+			this.messengerService.showProfileError(message)
+		})
 	}
 
 }

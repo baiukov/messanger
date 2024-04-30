@@ -19,6 +19,7 @@ export enum Events {
 	READMESSAGES = "READMESSAGES",
 	PIN = "PIN",
 	UNPIN = "UNPIN",
-	BLOCK = "BLOCK"
+	BLOCK = "BLOCK",
+	UPDATE = "UPDATE"
 
 }

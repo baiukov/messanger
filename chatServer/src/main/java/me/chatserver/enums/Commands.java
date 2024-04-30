@@ -13,5 +13,6 @@ public class Commands {
     public static String PIN = "PIN";
     public static String UNPIN = "UNPIN";
     public static String BLOCK = "BLOCK";
+    public static String UPDATE = "UPDATE";
 
 }

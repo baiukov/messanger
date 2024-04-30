@@ -20,4 +20,5 @@ export var Events;
     Events["PIN"] = "PIN";
     Events["UNPIN"] = "UNPIN";
     Events["BLOCK"] = "BLOCK";
+    Events["UPDATE"] = "UPDATE";
 })(Events || (Events = {}));
