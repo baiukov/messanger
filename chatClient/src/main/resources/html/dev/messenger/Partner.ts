@@ -4,7 +4,7 @@ export class Partner extends User {
 
 	private static user: Partner | undefined;
 
-	public static getUser() {
+	public static getUser = () => {
 		if (!this.user) {
 			this.user = new Partner()
 		}

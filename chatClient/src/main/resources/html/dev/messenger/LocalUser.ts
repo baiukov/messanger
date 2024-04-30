@@ -4,7 +4,7 @@ export class LocalUser extends User {
 
 	private static user: LocalUser | undefined;
 
-	public static getUser() {
+	public static getUser = () => {
 		if (!this.user) {
 			this.user = new LocalUser()
 		}

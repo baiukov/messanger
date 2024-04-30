@@ -4,13 +4,13 @@ import { log } from '../utils/log.js'
 
 export class MessengerView {
 
-	public getUserBox(name: string, surname: string) {
+	public getUserBox = (name: string, surname: string) => {
 		const box = document.createElement("div")
 		$(box).addClass("user-option").text(name + " " + surname)
 		return box;
 	}
 
-	public getDialogue(color: string, name: string, surname: string, messageStr: string, unread: number) {
+	public getDialogue = (color: string, name: string, surname: string, messageStr: string, unread: number) => {
 		const messageBox = document.createElement("div")
 		$(messageBox).addClass("message-box")
 		if (unread > 0) {
@@ -58,7 +58,7 @@ export class MessengerView {
 		
 	}
 
-	public getRelationBox(userID: string, partnerID: string, isAlreadyPinned: boolean) {
+	public getRelationBox = (userID: string, partnerID: string, isAlreadyPinned: boolean) => {
 		const box = document.createElement("div")
 		$(box).addClass("relations")
 		const pin = document.createElement("div")

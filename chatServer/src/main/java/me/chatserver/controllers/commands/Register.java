@@ -1,10 +1,11 @@
 package me.chatserver.controllers.commands;
 
+import me.chatserver.enums.Commands;
 import me.chatserver.services.AppService;
 
 public class Register implements ICommand {
 
-    private final String name = "REGISTER";
+    private final String name = Commands.REGISTER;
 
     private final AppService appService = AppService.getAppService();
 

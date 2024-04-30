@@ -6,6 +6,7 @@ import javafx.scene.web.WebEngine;
 import netscape.javascript.JSObject;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class MessageRouter {
@@ -50,7 +51,9 @@ public class MessageRouter {
     }
 
     public void switchPage(String folder, String commandOnReady) {
-        File htmlFile = new File(getClass().getResource("/html/pages/" + folder + "/index.html").getFile());
+        File htmlFile = new File(Objects.requireNonNull(
+                getClass().getResource("/html/pages/" + folder + "/index.html")).getFile()
+        );
         engine.load(htmlFile.toURI().toString());
         engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {

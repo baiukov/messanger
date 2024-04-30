@@ -9,13 +9,16 @@ import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage) {
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
-        File htmlFile = new File(getClass().getResource("/html/pages/login/index.html").getFile());
+        File htmlFile = new File(Objects.requireNonNull(
+                getClass().getResource("/html/pages/login/index.html")).getFile()
+        );
 
         webEngine.load(htmlFile.toURI().toString());
 

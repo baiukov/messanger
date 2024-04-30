@@ -22,7 +22,7 @@ export class DialogueService {
 		}, secToMs(1))
 	}
 
-	public initListeners() {
+	public initListeners = () => {
 		$(".back-button").click(() =>  {
 			//@ts-ignore
 			window.javaConnector.switchPage("main", null)
@@ -52,11 +52,11 @@ export class DialogueService {
 	});
 	}
 
-	public setID(id: string) {
+	public setID = (id: string) => {
 		this.user.setID(id);
 	}
 
-	public setPartnerData(message: string[]) {
+	public setPartnerData = (message: string[]) => {
 		if (message.length < 4) return
 		const id = message[1]
 		const name: string = message[2]
@@ -76,7 +76,7 @@ export class DialogueService {
 		App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id])
 	}
 
-	public showMessages(message: string[]) {
+	public showMessages = (message: string[]) => {
 		const dialogue = $(".messages-wrapper")
 		for (let i = 1; i < message.length; i += 5) {
 			const messageID = message[i]

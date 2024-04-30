@@ -14,5 +14,7 @@ public class Commands {
     public static String UNPIN = "UNPIN";
     public static String BLOCK = "BLOCK";
     public static String UPDATE = "UPDATE";
+    public static String REGISTER = "REGISTER";
+    public static String LOGIN = "LOGIN";
 
 }
