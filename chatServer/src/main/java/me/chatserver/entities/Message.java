@@ -8,7 +8,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "messages")
+@Table(name = "text_messages")
 public class Message {
 
     @Id

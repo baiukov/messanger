@@ -264,15 +264,19 @@ public class AppService {
 
     public String update(String[] data) {
         if (data.length < 5) {
-            return Events.ERROR + "1Fill the form properly";
+            return Events.ERROR + "Fill the form properly";
         }
 
         String id = data[1];
 
         User user = userRepository.getById(id);
-        String firstName = data[2].equals("null") ? user.getFirstName() : data[2] ;
-        String lastName = data[3].equals("null") ? user.getLastName() : data[3];
+        String firstName = data[2] != null && data[2].equals("null") ? user.getFirstName() : data[2] ;
+        String lastName = data[3] != null && data[3].equals("null") ? user.getLastName() : data[3];
         String passwordStr = data[4];
+
+        if (passwordStr == null) {
+            return Events.ERROR + "Fill the form properly";
+        }
 
         String password = passwordStr.equals("null") ? user.getPassword() : BCrypt.withDefaults()
                 .hashToString(12, passwordStr.toCharArray());
@@ -281,7 +285,7 @@ public class AppService {
             return Events.ERROR + "Fill the form properly";
         }
 
-        if (password.length() < 6) {
+        if (passwordStr.length() < 6) {
             return Events.ERROR + "Password doesnt contain 6 chars";
         }
 

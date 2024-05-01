@@ -1,16 +1,13 @@
 package me.chat.chatclient;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Slf4j
 public class SocketClient {
 
     // uložení portu socketového serveru
@@ -24,6 +21,8 @@ public class SocketClient {
 
     // uložení instance přesměrováče zpráv
     private MessageRouter messageRouter;
+
+    private static final Logger log = LogManager.getLogger();
 
     // uložení instance logger
     //private static final Logger logger = LogManager.getLogger(SocketClient.class);

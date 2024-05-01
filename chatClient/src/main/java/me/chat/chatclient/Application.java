@@ -6,14 +6,17 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 import netscape.javascript.JSObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Objects;
 
-@Slf4j
 public class Application extends javafx.application.Application {
+
+    private static final Logger log = LogManager.getLogger();
+
     @Override
     public void start(Stage primaryStage) {
         WebView webView = new WebView();

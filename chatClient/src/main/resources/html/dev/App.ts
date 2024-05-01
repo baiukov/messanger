@@ -70,9 +70,9 @@ export class App {
 		data.forEach((element: any) => {
 			message += element + " "
 		})
+		log(`Server event ${eventName} has been sent to server with data ${data}` )
 		// @ts-ignore
 		window.javaConnector.receiveMessage(message)
-		log(`Server event ${eventName} has been sent to server with data ${data}` )
 	}
 
 	public static setID = (id: string) => {

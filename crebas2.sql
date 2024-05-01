@@ -22,9 +22,9 @@ create table colors
 );
 
 /*==============================================================*/
-/* Table: users                                                 */
+/* Table: actual_users                                          */
 /*==============================================================*/
-create table users
+create table actual_users
 (
    id                   varchar(100) not null  comment '',
    user_name            varchar(30) not null  comment '',
@@ -38,9 +38,9 @@ create table users
 );
 
 /*==============================================================*/
-/* Table: messages                                              */
+/* Table: text_messages                                              */
 /*==============================================================*/
-create table messages
+create table text_messages
 (
    id                   varchar(100) not null  comment '',
    sender_id            varchar(100) not null  comment '',
@@ -54,9 +54,9 @@ create table messages
 );
 
 /*==============================================================*/
-/* Table: user_relations                                        */
+/* Table: user_relation                                         */
 /*==============================================================*/
-create table user_relations
+create table user_relation
 (
    id                   varchar(100) not null  comment '',
    user_1               varchar(100) not null  comment '',

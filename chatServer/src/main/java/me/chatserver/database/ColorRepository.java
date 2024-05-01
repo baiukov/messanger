@@ -13,8 +13,6 @@ import java.util.List;
 @Slf4j
 public class ColorRepository {
 
-    private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
-
     public int getAvailableAmount() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();

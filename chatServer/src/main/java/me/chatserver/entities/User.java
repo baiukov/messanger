@@ -1,12 +1,15 @@
 package me.chatserver.entities;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import javax.persistence.*;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="users")
+@EntityScan
+@Table(name="actual_users")
 public class User {
 
     @Id

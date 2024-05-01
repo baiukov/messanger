@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <TEXT_MESSAGES
+            sender_id="c1dfd651-eff7-4113-9931-90780be76075"
+            receiver_id="714b24c7-e001-4710-aff9-faef3cceb911"
+            text="message text"
+            is_read="false"
+            created_at="2024-05-01 7:03:25"
+    />
+</dataset>

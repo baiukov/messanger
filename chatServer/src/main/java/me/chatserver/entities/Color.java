@@ -17,10 +17,7 @@ public class Color {
     @Column(name = "hexcode")
     private String hexcode;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<User> users;
 
     public Color() {
@@ -51,5 +48,9 @@ public class Color {
                 name,
                 hexcode
         );
+    }
+
+    public boolean equals(Color color) {
+        return id == color.getID() && name.equals(color.getName()) && hexcode.equals(color.getHexcode());
     }
 }

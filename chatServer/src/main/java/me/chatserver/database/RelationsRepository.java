@@ -22,7 +22,7 @@ public class RelationsRepository {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.save(relation);
+            System.out.println(session.save(relation));
             transaction.commit();
             log.info("New relation has been created " + relation);
         } catch (Exception e) {

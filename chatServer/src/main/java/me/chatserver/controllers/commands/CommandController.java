@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Slf4j
 public class CommandController {
-    List<ICommand> commands = new ArrayList<>();
+    private final List<ICommand> commands = new ArrayList<>();
 
     private final ClientHandler clientHandler;
 

@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,7 +47,7 @@ public class UserRepository {
         } catch (Exception e) {
             log.error("Unable to fetch user by username. Transaction error happened: " + e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public User getById(String id) {
@@ -75,7 +76,7 @@ public class UserRepository {
         } catch (Exception e) {
             log.error("Unable to fetch user by pattern. Transaction error happened: " + e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void update(String id, String name, String surname, String password) {

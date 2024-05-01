@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <ACTUAL_USERS ID="randomID" USER_NAME="testUser" FIRST_NAME="test" LAST_NAME="test" PASSWORD="password" COLOR="1"/>
+</dataset>

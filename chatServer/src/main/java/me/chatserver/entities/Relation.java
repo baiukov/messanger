@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_relations")
+@Table(name = "user_relation")
 public class Relation {
 
     @Id
@@ -61,5 +61,9 @@ public class Relation {
                 isPinned,
                 isBlocked
         );
+    }
+
+    public boolean equals(Relation relation) {
+        return id.equals(relation.getId());
     }
 }

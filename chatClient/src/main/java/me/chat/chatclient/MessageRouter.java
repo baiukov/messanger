@@ -3,14 +3,12 @@ package me.chat.chatclient;
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
-import lombok.extern.slf4j.Slf4j;
-import netscape.javascript.JSObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.function.Function;
 
-@Slf4j
 public class MessageRouter {
 
     private final WebEngine engine;
@@ -18,6 +16,8 @@ public class MessageRouter {
     private final SocketClient socketClient;
 
     private String id = null;
+
+    private static final Logger log = LogManager.getLogger();
 
     public MessageRouter(WebEngine webEngine, SocketClient sc) {
         engine = webEngine;
@@ -32,7 +32,7 @@ public class MessageRouter {
     }
 
     public void receiveMessage(String message) {
-        if (message.startsWith("LOG")) {
+        if (message.startsWith("LOG") && !message.startsWith("LOGIN")) {
             log.info(message);
             return;
         }

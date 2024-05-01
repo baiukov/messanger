@@ -79,4 +79,6 @@ public class SQLTemplateService {
     public String getSQL(Class<? extends SQLTemplate> sqlName) {
         return sqlMap.get(sqlName);
     }
+
+    public Map<Class<SQLTemplate>, String> getSqlMap() { return sqlMap; }
 }
