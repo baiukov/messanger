@@ -7,15 +7,23 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Application extends javafx.application.Application {
+
+    private static final Logger log = LogManager.getLogger();
+
     @Override
     public void start(Stage primaryStage) {
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
-        File htmlFile = new File(getClass().getResource("/html/pages/login/index.html").getFile());
+        File htmlFile = new File(Objects.requireNonNull(
+                getClass().getResource("/html/pages/login/index.html")).getFile()
+        );
 
         webEngine.load(htmlFile.toURI().toString());
 
@@ -29,12 +37,15 @@ public class Application extends javafx.application.Application {
             if (newValue == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javaConnector", messageRouter);
+                log.info("Java connector has been attached to the front project as window member");
             }
         });
 
         StackPane root = new StackPane(webView);
 
         Scene scene = new Scene(root, 600, 900);
+
+        log.info("Application has been started");
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Chat");

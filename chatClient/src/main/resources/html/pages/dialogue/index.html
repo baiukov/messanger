@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name='author' content='Aleksei Baiukov'>
+	<script type='module' src="../../dist/bundle.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Erica+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+	<link rel='stylesheet' href='../../assets/styles/style.css'>
+	<title>Document</title>
+</head>
+
+<body class='main'>
+	<div class='main-wrapper'>
+		<div class='main-window'>
+			<div class='header'>
+				<div class='header-content'>
+					<div class='left-side'>
+						<img class='logo' src='../../assets/images/logo.png'>
+						<h2 class='title'>CHAT</h2>
+					</div>
+
+					<div class='avatar-wrapper'>
+						<div class='avatar clickable-avatar' id='avatar'>
+							<h2 id='firstLetter'></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class='dialogue-header'>
+				<div class='back-button'>
+					<img src='../../assets/images/back.svg'>
+					<h3>Back</h3>
+				</div>
+
+				<h2 id='partnerName'></h2>
+
+				<div class='avatar-wrapper'>
+					<div class='avatar' id='partnersAvatar'>
+						<h2 id='partnersFirstLetter'></h2>
+					</div>
+				</div>
+			</div>
+
+			<div class='dialogue-wrapper'>
+				<div class='dialogue'>
+					<div class='messages-wrapper'></div>
+				</div>
+
+				<form class='send-box' action='#'>
+					<div class='message-field'>
+						<textarea type='text' placeholder='Input your message' id='message' maxlength='2000'></textarea>
+						<div class='submit-send'>
+							<img src='../../assets/images/send.svg'>
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+		</div>
+</body>
+
+</html>

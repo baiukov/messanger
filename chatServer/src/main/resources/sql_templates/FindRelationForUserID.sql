@@ -1,0 +1,1 @@
+FROM Relation WHERE USER_1 = :id OR USER_2 = :id

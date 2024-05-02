@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <ACTUAL_USERS
+            ID="randomID"
+            USER_NAME="testUser"
+            FIRST_NAME="newFirstName"
+            LAST_NAME="newLastName"
+            PASSWORD="newPassword"
+            COLOR="1"
+    />
+</dataset>

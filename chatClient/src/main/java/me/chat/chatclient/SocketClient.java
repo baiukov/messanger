@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SocketClient {
 
@@ -21,6 +21,8 @@ public class SocketClient {
 
     // uložení instance přesměrováče zpráv
     private MessageRouter messageRouter;
+
+    private static final Logger log = LogManager.getLogger();
 
     // uložení instance logger
     //private static final Logger logger = LogManager.getLogger(SocketClient.class);
@@ -50,19 +52,19 @@ public class SocketClient {
                 try {
                     String serverResponse;
                     while ((serverResponse = in.readLine()) != null) {
-                        //logger.info("Message got from the server - " + serverResponse);
+                        log.info("Message received from the server - " + serverResponse);
                         if (messageRouter != null) {
                             messageRouter.sendMessageToFront(serverResponse);
                         }
                     }
                 } catch (IOException ex) {
-                    //logger.error("Exception occurred at reader thread start \n" + ex.getMessage());
+                    log.error("Exception occurred at reader thread start " + ex.getMessage());
                 }
             });
             readerThread.start();
-            //logger.info("Client has been connected to server " + ip + ":" + SERVER_PORT);
+            log.info("Client has been connected to server " + ip + ":" + SERVER_PORT);
         } catch (IOException ex) {
-            //logger.error("Exception occurred at client socket start \n" + ex.getMessage());
+            log.error("Exception occurred at client socket start " + ex.getMessage());
         }
     }
 
@@ -75,7 +77,7 @@ public class SocketClient {
     public void sendMessage(Object message) {
         if (out != null) {
             out.println(message);
+            log.info("Message sent to server - " + message);
         }
-        //logger.info("Message prepared for server - \n" + message);
     }
 }

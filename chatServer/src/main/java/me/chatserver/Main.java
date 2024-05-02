@@ -1,5 +1,6 @@
 package me.chatserver;
 
+import lombok.extern.slf4j.Slf4j;
 import me.chatserver.controllers.ClientHandler;
 import me.chatserver.services.SQLTemplateService;
 
@@ -7,6 +8,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Třída pro spuštění soketového serveru, připojování klientů a nastavení komunikací s nimi.
+ *
+ * @author Aleksei Baiukov
+ * @version 02.05.2024
+ */
+@Slf4j
 public class Main {
     /**
      * Metoda pro nastartování aplikaci, resp. serveru, který bude spuštěn
@@ -20,15 +28,16 @@ public class Main {
         final int PORT = 8686;
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-
+            log.info("Server successfully started. Listen on port " + PORT);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
 
                 Thread clientHandlerThread = new Thread(new ClientHandler(clientSocket));
                 clientHandlerThread.start();
+                log.info("Client has been connected to the server");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            log.error("Error occured on server starting " + e.getMessage());
         }
     }
 

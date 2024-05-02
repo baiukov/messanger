@@ -22,9 +22,9 @@ create table colors
 );
 
 /*==============================================================*/
-/* Table: users                                                 */
+/* Table: actual_users                                          */
 /*==============================================================*/
-create table users
+create table actual_users
 (
    id                   varchar(100) not null  comment '',
    user_name            varchar(30) not null  comment '',
@@ -38,28 +38,27 @@ create table users
 );
 
 /*==============================================================*/
-/* Table: messages                                              */
+/* Table: text_messages                                              */
 /*==============================================================*/
-create table messages
+create table text_messages
 (
    id                   varchar(100) not null  comment '',
-   message_id           varchar(100) not null  comment '',
    sender_id            varchar(100) not null  comment '',
    receiver_id          varchar(100) not null  comment '',
    text                 varchar(2000) not null  comment '',
    is_read              smallint not null  comment '',
+   created_at           TIMESTAMP not null default CURRENT_TIMESTAMP comment '',
    primary key (id),
    constraint FK_MESSAGES_SENT_MESS_USERS foreign key (sender_id)
       references users (id) on delete restrict on update restrict
 );
 
 /*==============================================================*/
-/* Table: user_relations                                        */
+/* Table: user_relation                                         */
 /*==============================================================*/
-create table user_relations
+create table user_relation
 (
    id                   varchar(100) not null  comment '',
-   relation_id          varchar(100) not null  comment '',
    user_1               varchar(100) not null  comment '',
    user_2               varchar(100) not null  comment '',
    is_pinned            smallint not null default false  comment '',

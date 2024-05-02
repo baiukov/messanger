@@ -1,4 +1,3 @@
-import { LogLevels } from '../enums/logLevels.enum.js'
 import { log } from '../utils/log.js'
 import { secToMs } from '../utils/secToMs.js'
 
@@ -8,7 +7,7 @@ import { secToMs } from '../utils/secToMs.js'
 export class NotificationsService {
 
 	// metoda která přidá zprávu na obrazovku a po 10 sekudnách ji smaže
-	public show(message: string) {
+	public show = (message: string) => {
 		const error = document.createElement("div")
 		$(error).hide()
 		$(error).addClass("error")
@@ -35,10 +34,10 @@ export class NotificationsService {
 		}
 
 		show(error)
-		log(LogLevels.INFO, "Notification has been shown. Message: " + message)
+		log("Notification has been shown. Message: " + message)
 	}
 
-	public showError(errorData: string[]) {
+	public showError = (errorData: string[]) => {
 		let message = "";
 		for (let i = 1; i < errorData.length; i++) {
 			message += errorData[i] + " "

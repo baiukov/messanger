@@ -4,3 +4,5 @@ chatClient/src/main/resources/html/node_modules
 mysql-8.0.36-winx64
 chatClient/src/main/resources/html/build
 chatClient/src/main/resources/html/dist
+chatClient/logs
+chatServer/logs

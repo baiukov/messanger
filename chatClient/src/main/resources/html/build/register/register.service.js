@@ -1,13 +1,23 @@
 import { App } from '../App.js';
 import { Events } from '../enums/Events.enum.js';
+/*
+    Třída RegisterService - je třída služby příhlášení a registrace, která se zabývá zpracováním logiky příhlášení a registrace
+*/
 var RegisterService = /** @class */ (function () {
+    // konstruktor třídy, po načítání stránky, bude vyvolána metoda poslouchání stisknutí tlačitek
     function RegisterService() {
+        // metoda nastavení tlačítka příhlášení a registrace. Ověří, jestli data jsou uvedená správně a pošle požadavek na server o registrace nového hráče a přesměrování ho do hlavní stránky
         this.startListener = function () {
             $("#login").submit(function () {
                 var name = $("#userName").val();
                 var password = $("#password").val();
                 if (!name || !password)
                     return false;
+                var space = " ";
+                if (name.includes(space) || password.includes(space)) {
+                    App.emit(Events.NOTIFY, "Don't use spaces");
+                    return false;
+                }
                 App.emitClient(Events.LOGIN, [name, password]);
                 return false;
             });
@@ -22,6 +32,11 @@ var RegisterService = /** @class */ (function () {
                     return false;
                 }
                 ;
+                var space = " ";
+                if (firstName.includes(space) || lastName.includes(space) || password.includes(space)) {
+                    App.emit(Events.NOTIFY, "Don't use spaces");
+                    return false;
+                }
                 if (password != repeatPassword) {
                     App.emit(Events.NOTIFY, "Passwords don't match");
                     return false;
@@ -38,18 +53,20 @@ var RegisterService = /** @class */ (function () {
                 return false;
             });
         };
+        // po úspěšném přihlášení přesměruje uživatele na hlavní stránku a uloží jeho identifikační číslo do klienta
+        this.moveToMain = function (message) {
+            if (message.length < 2) {
+                App.emit(Events.NOTIFY, "Unknown error happened");
+                return;
+            }
+            App.id = message[1];
+            // @ts-ignore
+            window.javaConnector.setID(message[1]);
+            // @ts-ignore
+            window.javaConnector.switchPage("main", null);
+        };
         this.startListener();
     }
-    RegisterService.prototype.moveToMain = function (message) {
-        if (message.length < 2) {
-            App.emit(Events.NOTIFY, "Unknown error happened");
-            return;
-        }
-        // @ts-ignore
-        window.javaConnector.setID(message[1]);
-        // @ts-ignore
-        window.javaConnector.goToMain();
-    };
     return RegisterService;
 }());
 export { RegisterService };

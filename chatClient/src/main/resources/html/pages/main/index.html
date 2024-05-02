@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name='author' content='Aleksei Baiukov'>
-	<script type='module' src="dist/bundle.js"></script>
+	<script type='module' src="../../dist/bundle.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +16,9 @@
 </head>
 
 <body class='main'>
+
 	<div class='main-wrapper'>
-		<div class='window'>
+		<div class='main-window'>
 			<div class='header'>
 				<div class='header-content'>
 					<div class='left-side'>
@@ -26,20 +27,53 @@
 					</div>
 
 					<div class='avatar-wrapper'>
-						<div class='avatar' id='avatar'>
+						<div class='avatar clickable-avatar profile-avatar' id='avatar'>
 							<h2 id='firstLetter'></h2>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<form class='search'>
+			<div class='profile'>
+				<div class='big-avatar-wrapper'>
+					<div class='big-avatar avatar' id='avatar'>
+						<h2 id='bigFirstLetter'></h2>
+					</div>
+				</div>
+				<form class='profile-updated' action='#'>
+					<div class='field'>
+						<input type='text' placeholder='First name' id='name' maxlength='30'>
+					</div>
+					<div class='field'>
+						<input type='text' placeholder='Second name' id='surname' maxlength='30'>
+					</div>
+					<div class='field'>
+						<input type='password' placeholder='New password' id='newPassword' maxlength='100'>
+					</div>
+					<div class='field'>
+						<input type='password' placeholder='Repeat password' id='passwordRepeat' maxlength='100'>
+					</div>
+					<div class='field'>
+						<input type='password' placeholder='Current password' id='currentPassword' maxlength='100'>
+					</div>
+
+					<div class='profile-button-wrapper'>
+						<p class='error-text'></p>
+						<button class='submit' type='submit' id='save'>Save</button>
+					</div>
+				</form>
+			</div>
+
+			<form id='search' class='search'>
 				<div class='field'>
 					<input type='text' placeholder='Input username' id='user' maxlength='30'>
+					<div class='user-list'>
+					</div>
 				</div>
-
-				<button class='submit' type='submit'>Find</button>
 			</form>
+
+			<div class='messages-box'></div>
+
 		</div>
 	</div>
 </body>
