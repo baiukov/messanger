@@ -3,7 +3,6 @@ package me.chatserver.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**

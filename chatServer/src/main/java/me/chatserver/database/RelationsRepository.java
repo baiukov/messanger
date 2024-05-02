@@ -1,7 +1,10 @@
 package me.chatserver.database;
 
 import lombok.extern.slf4j.Slf4j;
-import me.chatserver.database.templates.*;
+import me.chatserver.database.templates.FindRelationByUsers;
+import me.chatserver.database.templates.FindRelationForUserID;
+import me.chatserver.database.templates.SetBlocked;
+import me.chatserver.database.templates.SetPinned;
 import me.chatserver.entities.Relation;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;

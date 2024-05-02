@@ -24,17 +24,16 @@ create table colors
 /*==============================================================*/
 /* Table: actual_users                                          */
 /*==============================================================*/
-create table actual_users
-(
-   id                   varchar(100) not null  comment '',
-   user_name            varchar(30) not null  comment '',
-   first_name           varchar(50) not null  comment '',
-   last_name            varchar(50) not null  comment '',
-   password             varchar(100) not null  comment '',
-   color                varchar(100)  comment '',
-   primary key (id),
-   constraint FK_USERS_HAVE_A_CO_COLORS foreign key (id)
-      references Colors (id) on delete restrict on update restrict
+CREATE TABLE actual_users (
+   id                VARCHAR(100) NOT NULL COMMENT '',
+   user_name         VARCHAR(30) NOT NULL COMMENT '',
+   first_name        VARCHAR(50) NOT NULL COMMENT '',
+   last_name         VARCHAR(50) NOT NULL COMMENT '',
+   password          VARCHAR(100) NOT NULL COMMENT '',
+   color             INT COMMENT '',
+   PRIMARY KEY (id),
+   CONSTRAINT FK_USERS_HAVE_A_CO_COLORS FOREIGN KEY (color)
+      REFERENCES colors (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 /*==============================================================*/
@@ -50,7 +49,7 @@ create table text_messages
    created_at           TIMESTAMP not null default CURRENT_TIMESTAMP comment '',
    primary key (id),
    constraint FK_MESSAGES_SENT_MESS_USERS foreign key (sender_id)
-      references users (id) on delete restrict on update restrict
+      references actual_users (id) on delete restrict on update restrict
 );
 
 /*==============================================================*/
@@ -65,29 +64,13 @@ create table user_relation
    is_blocked           smallint not null default false  comment '',
    primary key (id),
    constraint FK_USER_REL_INITIATED_USERS foreign key (user_1)
-      references users (id) on delete restrict on update restrict
+      references actual_users (id) on delete restrict on update restrict
 );
 
-alter table messages 
-   drop foreign key FK_MESSAGES_SENT_MESS_USERS;
 
-alter table user_relations 
-   drop foreign key FK_USER_REL_INITIATED_USERS;
 
-alter table users 
-   drop foreign key FK_USERS_HAVE_A_CO_COLORS;
-
-alter table messages 
-   drop foreign key FK_MESSAGES_SENT_MESS_USERS;
-
-alter table user_relations 
-   drop foreign key FK_USER_REL_INITIATED_USERS;
-
-alter table users 
-   drop foreign key FK_USERS_HAVE_A_CO_COLORS;
-
-INSERT INTO COLORS(`name`, `hexcode`) VALUES ("Cotton candy", "F2C4DE");
-INSERT INTO COLORS(`name`, `hexcode`) VALUES ("Robin egg blue", "71B1D9");
-INSERT INTO COLORS(`name`, `hexcode`) VALUES ("Baby blue", "AED8F2");
-INSERT INTO COLORS(`name`, `hexcode`) VALUES ("Cornflower yellow", "F2DEA2");
-INSERT INTO COLORS(`name`, `hexcode`) VALUES ("Dusty pink", "F2CDC4");
+INSERT INTO colors(`name`, `hexcode`) VALUES ("Cotton candy", "F2C4DE");
+INSERT INTO colors(`name`, `hexcode`) VALUES ("Robin egg blue", "71B1D9");
+INSERT INTO colors(`name`, `hexcode`) VALUES ("Baby blue", "AED8F2");
+INSERT INTO colors(`name`, `hexcode`) VALUES ("Cornflower yellow", "F2DEA2");
+INSERT INTO colors(`name`, `hexcode`) VALUES ("Dusty pink", "F2CDC4");

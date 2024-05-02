@@ -2,7 +2,6 @@ package me.chatserver.database;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chatserver.entities.Color;
-import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
 import org.hibernate.Session;
 

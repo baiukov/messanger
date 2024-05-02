@@ -2,7 +2,6 @@ package me.chatserver.controllers.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chatserver.enums.Commands;
-import me.chatserver.enums.Events;
 import me.chatserver.services.AppService;
 
 /**

@@ -1,11 +1,10 @@
 package me.chatserver.database;
 
 import lombok.extern.slf4j.Slf4j;
-import me.chatserver.database.templates.SetBlocked;
-import me.chatserver.database.templates.UpdateUser;
-import me.chatserver.entities.User;
 import me.chatserver.database.templates.FindUserByPattern;
 import me.chatserver.database.templates.FindUserByUserName;
+import me.chatserver.database.templates.UpdateUser;
+import me.chatserver.entities.User;
 import me.chatserver.services.SQLTemplateService;
 import me.chatserver.utils.HibernateUtil;
 import org.hibernate.Session;
