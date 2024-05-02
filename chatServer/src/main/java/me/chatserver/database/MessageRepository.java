@@ -14,11 +14,29 @@ import org.hibernate.Transaction;
 import java.math.BigInteger;
 import java.util.List;
 
+/**
+ * Třída MessageRepository - je třída repositáře uživatelských zpráv, která se zabývá operováním s jejích uložištěm.
+ * V této třídě jsou definováné metody komunikace s uložištěm, které budou zajištěny transakcemi
+ * knihovny Hibernate
+ *
+ * @author Aleksei Baiukov
+ * @version 02.05.2024
+ */
 @Slf4j
 public class MessageRepository {
 
+    /**
+     * Uložení služby pro vyhledání šablon SQL příkazů
+     */
     SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
 
+    /**
+     * Metoda uložení nové entity zprávy. Otevří novou sessinu, vytvoří v ní transakci, pokusí se uložit
+     * předanou instanci zprávy, pokud se ji to podaří, provede transakci, jinak smaže změny a zavře
+     * sessionu.
+     *
+     * @param message instance uživatelské zprávy
+     */
     public void save(Message message) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
@@ -37,6 +55,15 @@ public class MessageRepository {
         }
     }
 
+    /**
+     * Metoda pro získání všech zpráv mezi uživateli podle jejich identifikačních čísel.
+     * Otevří novou sessinu, pokusí se vyhledat uživatele, pokud se ji to podaří, vrátí seznam objektů reprezentujících
+     * zprávy, jinak zavře sessionu.
+     *
+     * @param id identifikační číslo
+     * @param partnerID identifikační číslo partneru
+     * @return seznam objektu reprezentujících zprávu
+     */
     public List<Object[]> getMessagesByUserID(String id, String partnerID) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(FindMessagesByUser.class);
@@ -50,6 +77,15 @@ public class MessageRepository {
         return null;
     }
 
+    /**
+     * Metoda pro získání poslední zprávy mezi uživateli podle jejich identifikačních čísel.
+     * Otevří novou sessinu, pokusí se vyhledat uživatele, pokud se ji to podaří, vrátí obsah poslední zprávy,
+     * jinak sessionu zavře
+     *
+     * @param id identifikační číslo
+     * @param partnerID identifikační číslo partneru
+     * @return obsah poslední zprávy nebo null
+     */
     public List<String> getLastMessagesByUsers(String id, String partnerID) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(FindLastMessageByUsers.class);
@@ -63,6 +99,15 @@ public class MessageRepository {
         return null;
     }
 
+    /**
+     * Metoda pro získání počtu všech nepřečtených zpráv mezi uživateli podle jejich identifikačních čísel.
+     * Otevří novou sessinu, pokusí se vyhledat uživatele, pokud se ji to podaří, vrátí seznam obsahující číslo počtu
+     * nepřečtených zpráv, jinak zavře sessionu.
+     *
+     * @param id identifikační číslo
+     * @param partnerID identifikační číslo partneru
+     * @return počet zpráv nebo null
+     */
     public List<BigInteger> getAmountUnreadMessages(String id, String partnerID) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(GetAmountUnreadMessages.class);
@@ -76,6 +121,15 @@ public class MessageRepository {
         return null;
     }
 
+    /**
+     * Metoda pro nastavení všech zpráv získaných jedným uživatelem v chatu s druhým jako přečtených.
+     * Otevří novou sessinu, vytvoří v ní transakci, pokusí se obnovit všechny zprávy podle
+     * předaných identifikačních čísel, pokud se ji to podaří, provede transakci, jinak smaže změny a zavře
+     * sessionu.
+     *
+     * @param id identifikační číslo
+     * @param partnerID identifikační číslo partneru
+     */
     public void setMessagesRead(String id, String partnerID) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;

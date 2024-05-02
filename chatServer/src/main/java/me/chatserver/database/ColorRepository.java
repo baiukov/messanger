@@ -10,6 +10,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
+/**
+ * Třída ColorRepository - je třída repositáře barev, která se zabývá operováním s jejích uložištěm.
+ * V této třídě jsou definováné metody komunikace s uložištěm, které budou zajištěny transakcemi
+ * knihovny Hibernate
+ *
+ * @author Aleksei Baiukov
+ * @version 02.05.2024
+ */
 @Slf4j
 public class ColorRepository {
 

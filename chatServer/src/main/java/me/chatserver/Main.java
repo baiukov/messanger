@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Třída pro spuštění soketového serveru, připojování klientů a nastavení komunikací s nimi.
+ *
+ * @author Aleksei Baiukov
+ * @version 02.05.2024
+ */
 @Slf4j
 public class Main {
     /**

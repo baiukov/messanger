@@ -12,11 +12,29 @@ import org.hibernate.query.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Třída RelationsRepository - je třída repositáře uživatelských vzrahů, která se zabývá operováním s jejích uložištěm.
+ * V této třídě jsou definováné metody komunikace s uložištěm, které budou zajištěny transakcemi
+ * knihovny Hibernate
+ *
+ * @author Aleksei Baiukov
+ * @version 02.05.2024
+ */
 @Slf4j
 public class RelationsRepository {
 
+    /**
+     * Uložení služby pro vyhledání šablon SQL příkazů
+     */
     private final SQLTemplateService sqlTemplateService = SQLTemplateService.getSqlTemplateService();
 
+    /**
+     * Metoda uložení nové entity vztahu. Otevří novou sessinu, vytvoří v ní transakci, pokusí se uložit
+     * předanou instanci vztahu, pokud se ji to podaří, provede transakci, jinak smaže změny a zavře
+     * sessionu.
+     *
+     * @param relation instance uživatelského vztahu
+     */
     public void save(Relation relation) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
@@ -35,6 +53,15 @@ public class RelationsRepository {
         }
     }
 
+    /**
+     * Metoda pro získání vztahu mezi uživateli podle jejich identifikačních čísel.
+     * Otevří novou sessinu, pokusí se vyhledat vztah, pokud se ji to podaří, vrátí seznam obsahující tento vztah,
+     * jinak zavře sessionu.
+     *
+     * @param user1ID iniciátor vztahu
+     * @param user2ID druhý uživatel ve vztahu
+     * @return seznam vztahů
+     */
     public List<Relation> getByUsers(String user1ID, String user2ID) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(FindRelationByUsers.class);
@@ -48,6 +75,14 @@ public class RelationsRepository {
         return new ArrayList<>();
     }
 
+    /**
+     * Metoda pro získání všech vztahů spojených s uživatelem podle jeho identifikačního čísla.
+     * Otevří novou sessinu, pokusí se vyhledat vztahy, pokud se ji to podaří, vrátí seznam vztahů,
+     * jinak zavře sessionu.
+     *
+     * @param id identifikační číslo uživatele
+     * @return seznam vztahů
+     */
     public List<Relation> getByUser(String id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String sql = sqlTemplateService.getSQL(FindRelationForUserID.class);
@@ -60,6 +95,15 @@ public class RelationsRepository {
         return new ArrayList<>();
     }
 
+    /**
+     * Metoda pro připnutí vztahu (chatu) mezi uživateli.
+     * Otevří novou sessinu, vytvoří v ní transakci, pokusí se obnovit instanci vztahu,
+     * pokud se ji to podaří, provede transakci, jinak smaže změny a zavře sessionu.
+     *
+     * @param userID identifikační číslo uživatele
+     * @param partnerID identifikační číslo partnera
+     * @param isPinned jestli se vztah má připnout nebo odepnout
+     */
     public void pin(String userID, String partnerID, boolean isPinned) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
@@ -83,6 +127,15 @@ public class RelationsRepository {
         }
     }
 
+    /**
+     * Metoda pro zablokování vztahu (chatu) mezi uživateli.
+     * Otevří novou sessinu, vytvoří v ní transakci, pokusí se obnovit instanci vztahu, pokud se ji to podaří,
+     * provede transakci, jinak smaže změny a zavře sessionu.
+     *
+     * @param userID identifikační číslo uživatele
+     * @param partnerID identifikační číslo partnera
+     * @param isBlocked jestli se vztah má zablokovat nebo odblokovat
+     */
     public void block(String userID, String partnerID, boolean isBlocked) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;

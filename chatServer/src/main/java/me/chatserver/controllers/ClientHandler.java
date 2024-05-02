@@ -15,7 +15,7 @@ import java.util.Map;
  * Třída pro posloucháni a komunikaci s klienty.
  *
  * @author Aleksei Baiukov
- * @version 30.03.2024
+ * @version 01.05.2024
  */
 @Slf4j
 public class ClientHandler extends Thread {
@@ -25,9 +25,9 @@ public class ClientHandler extends Thread {
     // uložení streamu pro posílání zpráv
     private PrintWriter out;
 
+    // uložení správce příkazu
     private final CommandController commandController = new CommandController(this);
 
-    // uložení kontrolleru komand
     /**
      * Konstruktor třídy specifikující socket klienta
      */
