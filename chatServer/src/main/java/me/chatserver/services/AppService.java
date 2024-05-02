@@ -2,23 +2,20 @@ package me.chatserver.services;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import lombok.extern.slf4j.Slf4j;
+import me.chatserver.database.ColorRepository;
 import me.chatserver.database.MessageRepository;
 import me.chatserver.database.RelationsRepository;
+import me.chatserver.database.UserRepository;
 import me.chatserver.entities.Color;
 import me.chatserver.entities.Message;
 import me.chatserver.entities.Relation;
 import me.chatserver.entities.User;
 import me.chatserver.enums.Events;
-import me.chatserver.database.ColorRepository;
-import me.chatserver.database.UserRepository;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Třída služby aplikace - je služba uchovavající entity a databazové repozitáře

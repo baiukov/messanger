@@ -21,7 +21,7 @@ export class DialogueService {
 			if (this.user.getID()) {
 				App.emitClient(Events.FETCHMESSAGES, [this.user.getID(), this.partner.getID()])
 			}
-		}, secToMs(1))
+		}, secToMs(0.1))
 	}
 
 	public initListeners = () => {

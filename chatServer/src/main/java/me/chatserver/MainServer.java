@@ -2,7 +2,6 @@ package me.chatserver;
 
 import lombok.extern.slf4j.Slf4j;
 import me.chatserver.controllers.ClientHandler;
-import me.chatserver.services.SQLTemplateService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,7 +14,7 @@ import java.net.Socket;
  * @version 02.05.2024
  */
 @Slf4j
-public class Main {
+public class MainServer {
     /**
      * Metoda pro nastartování aplikaci, resp. serveru, který bude spuštěn
      * na uvedeném portu a bude čekat na připojení klientů. Až se nějaký připojí

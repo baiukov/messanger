@@ -28,7 +28,7 @@ public class Application extends javafx.application.Application {
         webEngine.load(htmlFile.toURI().toString());
 
         SocketClient socketClient = new SocketClient();
-        socketClient.start("localhost");
+        socketClient.start("45.67.57.171");
 
         MessageRouter messageRouter = new MessageRouter(webEngine, socketClient);
         socketClient.setMessageRouter(messageRouter);

@@ -17,7 +17,7 @@ export class MessengerService {
 			if (id) {
 				App.emitClient(Events.FETCHDIALOGUES, [LocalUser.getUser().getID()])
 			}
-		}, secToMs(0.5))
+		}, secToMs(0.1))
 	}
 
 	public setListeners = () => {
