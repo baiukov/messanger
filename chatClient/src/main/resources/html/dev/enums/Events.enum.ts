@@ -1,5 +1,8 @@
+/**
+ *  Dostupné názvy eventů k registraci a vyvolání
+ */
 export enum Events {
-
+	
 	LOGIN = "LOGIN",
 	REGISTER = "REGISTER",
 	LOG = "LOG",

@@ -2,12 +2,17 @@ import { App } from '../App.js'
 import { Events } from '../enums/Events.enum.js'
 import { log } from '../utils/log.js'
 
+/*
+	Třída RegisterService - je třída služby příhlášení a registrace, která se zabývá zpracováním logiky příhlášení a registrace
+*/
 export class RegisterService {
 
+	// konstruktor třídy, po načítání stránky, bude vyvolána metoda poslouchání stisknutí tlačitek
 	constructor() {
 		this.startListener()
 	}
 
+	// metoda nastavení tlačítka příhlášení a registrace. Ověří, jestli data jsou uvedená správně a pošle požadavek na server o registrace nového hráče a přesměrování ho do hlavní stránky
 	private startListener = () => {
 
 		$("#login").submit(() => {
@@ -67,6 +72,7 @@ export class RegisterService {
 
 	}
 
+	// po úspěšném přihlášení přesměruje uživatele na hlavní stránku a uloží jeho identifikační číslo do klienta
 	public moveToMain = (message: string[]) => {
 		if (message.length < 2) {
 			App.emit(Events.NOTIFY, "Unknown error happened")

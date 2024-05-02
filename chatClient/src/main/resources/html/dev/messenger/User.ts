@@ -1,17 +1,27 @@
+/*
+	Třída User - je abstraktní třída entity uživatelů uložených lokálně
+*/
 export abstract class User {
 
+	// identifikační číslo
 	private id: string | undefined
 
+	// uživatelské jméno
 	private userName: string | undefined
 
-	private firstName: string | undefined
+	// jméno
+	private firstName: string | undefined 
 
+	// přijmení
 	private lastName: string | undefined
 
+	// barva avataru
 	private color: string | undefined
 
+	// Konstrukto třídy
 	public constructor() { }
 
+	// Gettery
 	public getID = () => { return this.id }
 
 	public getUserName = () => { return this.userName }
@@ -23,6 +33,7 @@ export abstract class User {
 	public getColor = () => { return this.color }
 
 
+	// Settery
 	public setID = (id: string) => { this.id = id }
 
 	public setUserName = (userName: string) => { this.userName = userName }

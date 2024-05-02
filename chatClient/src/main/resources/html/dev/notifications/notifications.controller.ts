@@ -18,6 +18,7 @@ export class NotificationsController {
 			this.notificationsService.show(message)
 		})
 
+		// registrace získání chyby ze serveru
 		App.onClient(Events.ERROR, (message: string[]) => {
 			this.notificationsService.showError(message)
 		})

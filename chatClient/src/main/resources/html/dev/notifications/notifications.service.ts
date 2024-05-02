@@ -37,6 +37,7 @@ export class NotificationsService {
 		log("Notification has been shown. Message: " + message)
 	}
 
+	// metoda pro získání chyby z dat předaných serverem. Udělá z prvků pole jeden textový řádek
 	public showError = (errorData: string[]) => {
 		let message = "";
 		for (let i = 1; i < errorData.length; i++) {

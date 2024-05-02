@@ -6,14 +6,21 @@ import { log } from '../utils/log.js'
 import { secToMs } from '../utils/secToMs.js'
 import { DialogueView } from './dialogue.view.js'
 
+/*
+	Třída DialogueService - je třída služby chatů, která se zabývá zpracováním logiky chatů
+*/
 export class DialogueService {
 
+	// uložení instance partneru
 	private partner: Partner = Partner.getUser()
 
+	// uložení instance uživatele
 	private user: LocalUser = LocalUser.getUser()
 
+	// uložení instance třídy vzhledových prvků
 	private view = new DialogueView()
 
+	// konstruktor třídy, po načítání stránky bude vyvolána metoda poslouchání stisknutí tlačitek a ověření nových zpráv
 	constructor() {
 		this.initListeners()
 
@@ -21,16 +28,20 @@ export class DialogueService {
 			if (this.user.getID()) {
 				App.emitClient(Events.FETCHMESSAGES, [this.user.getID(), this.partner.getID()])
 			}
-		}, secToMs(1))
+		}, secToMs(0.1))
 	}
 
+	// metoda nastavení tlačítek
 	public initListeners = () => {
+		
+		// tlačítko vracení zpět na hlávní stránku
 		$(".back-button").click(() =>  {
 			log("Back button has been clicked. Redirecting to main page...")
 			//@ts-ignore
 			window.javaConnector.switchPage("main", null)
 		})
 
+		// forma pro odeslání zprávy
 		$(".send-box").on('submit', () => {
 			const message = $("#message").val()
 			if (!message) return;
@@ -39,14 +50,17 @@ export class DialogueService {
 			return false;
 		})
 
+		// tlačitko pro submitnutí formy
 		$(".submit-send").click(() => {
 			$(".send-box").submit()
 			$("#message").val("")
 		})
 
+		// ukazat hned poslední zprávy
 		$(".dialogue").scrollTop($(".dialogue").prop("scrollHeight"));
 		$(".dialogue").css("scroll-behavior", "smooth")
 
+		// odeslání zprávy stisknutím tlačítka ENTER
 		$("#message").keypress((event) => {
 			const enterButtonClickedEvent = 13;
 			if (event.which === enterButtonClickedEvent && !event.shiftKey) {
@@ -57,11 +71,13 @@ export class DialogueService {
 	});
 	}
 
+	// metoda nastavení identifikačního čísla
 	public setID = (id: string) => {
 		this.user.setID(id);
 		log("ID for local user has been set to " + id)
 	}
 
+	// metoda nastavení dat partneru
 	public setPartnerData = (message: string[]) => {
 		if (message.length < 4) return
 		const id = message[1]
@@ -81,6 +97,7 @@ export class DialogueService {
 		App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id])
 	}
 
+	// metoda pro zobrazení všech zpráv v chatu
 	public showMessages = (message: string[]) => {
 		const dialogue = $(".messages-wrapper")
 		log("Fetched messages with partner. Will be shown " + Math.floor(message.length / 5) + "message(-s)")
@@ -102,11 +119,10 @@ export class DialogueService {
 			const msg = text.replaceAll("/+", " ")
 			const date = new Date(dateStr + " " + timeStr)
 
+			// pokud odesílatel zprávy se liší, nebo poslední zprávu odeslal více jak před pěti minuty, zobrazí se jeho title znovu
 			const lastDate = i > 1 ? new Date(message[i - 2] + " " + message[i - 1]) : null
 			// @ts-ignore
 			const isLongerThanFiveMinutes = lastDate && (date - lastDate) / 60 / 1000 >= 5;
-			// @ts-ignore
-			log(msg)
 
 			const box = !isSameSender || isLongerThanFiveMinutes ? this.view.getMessageWithTitle(color || "", name, msg) : this.view.getMessage(msg)
 			$(box).attr("id", messageID)

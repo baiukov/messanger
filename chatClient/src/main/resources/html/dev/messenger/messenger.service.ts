@@ -5,10 +5,15 @@ import { secToMs } from '../utils/secToMs.js'
 import { LocalUser } from './LocalUser.js'
 import { MessengerView } from './messenger.view.js'
 
+/*
+	Třída MessengerService - je třída služby uživatelských zpráv, která se zabývá zpracováním logiky zpráv a registrace
+*/
 export class MessengerService {
 
+	// uložení instance třídy vzhledových prvků
 	private view: MessengerView = new MessengerView()
 
+	// konstruktor třídy, po načítání stránky, bude vyvolána metoda poslouchání stisknutí tlačitek a ověření stavu chatů uživatele
 	constructor() {
 		this.setListeners()
 
@@ -20,52 +25,57 @@ export class MessengerService {
 		}, secToMs(0.5))
 	}
 
+	// metoda nastavení tlačítek
 	public setListeners = () => {
 
+		// pokud uživatel zadá něco do vyhledavacího pole, metoda přepošle kus tento uživatelského jména na server, který se pokusí podle toho ho vyhledat
 		$("#user").keyup(() => {
 			$(".profile").css("display", "none")
 			const val = $("#user").val()
 			$(".user-list").empty()
 			App.emitClient(Events.FETCHUSERS, [val])
-			log("User type in search field")
 		})
 
+		// po kliknutí na avatar, otevře se okénko změn profilu
 		$(".profile-avatar").click((event) => {
 			$(".profile").css("display", "flex")
 			event.stopPropagation()
-			log("User clicked on profile avatar")
 		})
 
+		// při kliknutí kdekoliv na stránce, okénko pro změny profilu se zavře
 		$(document.body).click(() => {
 			$(".profile").css("display", "none")
-			log("User clicked on body")
 		})
 
+		// při kliknutí na profile, nebude vyvolána další kliknutí 
 		$(".profile").click((event) => {
 			event.stopPropagation()
-			log("User clicked on profile box")
 		})
 
+		// tlačítko uložení nových dat profilu
 		$("#save").click((event) => {
 			const shouldClose = this.update()
 			this.fetchData(LocalUser.getUser().getID() || "")
 			event.stopPropagation()
 			if (shouldClose) { $(".profile").css("display", "none") }
-			log("User clicked on save button in profile")
 			return false
 		})
 	}
 
+	// metoda pro získání celého jména a barvy avataru uživatele
 	public fetchData = (id: string) => {
+		log("FETCH DATA " + id)
 		LocalUser.getUser().setID(id)
 		App.emitClient(Events.FETCHNAME, [id])
 		App.emitClient(Events.FETCHCOLOR, [id])
 	}
 
+	// metoda pro nastavení celého jména po získání ze serveru
 	public setFullName = (message: string[]) => {
 		let firstName: string
 		let lastName: string
 		const user = LocalUser.getUser();
+		// pokud není, vyhodí se Unknown Unknown
 		if (message.length < 3) {
 			firstName = "Unknown"
 		  lastName = "Unknown"
@@ -85,6 +95,7 @@ export class MessengerService {
 		log(`User full name has been set. Name: ${firstName}, Last name: ${lastName}. First letter: ${firstLetter}`)
 	}
 
+	// metoda pro uložení změn profilu
 	public update = () => {
 		const currentPassword = $("#currentPassword").val()
 		
@@ -125,6 +136,7 @@ export class MessengerService {
 		return true
 	}
 
+	// metoda pro našeptáných uživatelů podle části jejích jména
 	public showUsers = (message: string[]) => {
 		log("User list in search will be updated with " + message.length + " user(-s)")
 		for (let i = 1; i < message.length; i += 3) {
@@ -133,6 +145,7 @@ export class MessengerService {
 			const partnerID = message[i + 2]
 			const box = this.view.getUserBox(name, surname)
 			const userID = LocalUser.getUser().getID() || ''
+			// při kliknutí na tohoto uživatele, přesměruje do jejich chatu
 			$(box).click(() => {
 				log([Events.READMESSAGES, userID, partnerID].toString())
 				App.emitClient(Events.READMESSAGES, [userID, partnerID])
@@ -143,8 +156,10 @@ export class MessengerService {
 		}
 	} 
 
+	// metoda pro nastavení barvy avataru
 	public setColor = (message: string[]) => {
 		let color;
+		// pokud neexistuje, nastaví se standardní (modrá)
 		if (message.length < 2) {
 			color = "F2C4DE"
 		} else {
@@ -157,6 +172,7 @@ export class MessengerService {
 		log("Colour for local user has been updated to " + hex)
 	}
 
+	// metoda pro nakreslení všech chatů na hlavní stránce
 	public showDialogues = (message: string[]) => {
 		const messagesBox = $(".messages-box")
 		log(Math.floor(message.length / 7) + " dialogue(-s) will be shown for user")
@@ -164,6 +180,7 @@ export class MessengerService {
 			const partnerID = message[i]
 			if ($(`#${partnerID}`).length) continue
 
+			// pro každý chat vypíše jméno, přijmení partnera, jeho avatar, text poslední zprávy a počet nepřečtených
 			const name = message[i + 1]
 			const surname = message[i + 2]
 			const partnerColor = message[i + 3]
@@ -176,10 +193,14 @@ export class MessengerService {
 			const dialogue = this.view.getDialogue(hex, name, surname, text, parseInt(unread))
 			$(dialogue).attr("id", partnerID)
 			const id = LocalUser.getUser().getID()
+
+			// při kliknutí na rameček chatu, přesměruje do něj
 			$(dialogue).click(() => {
 				// @ts-ignore
 				window.javaConnector.goToDialogue(partnerID)
 			})	
+
+			// při kliknutí pravým tlačítkem na chat, otevře se kontextní menu s připnutím a zablokováním
 			$(dialogue).on('contextmenu', (event) => {
 				$(".relations").remove()
 				const relationBox = this.view.getRelationBox(id || "", partnerID, isPinned)
@@ -192,6 +213,7 @@ export class MessengerService {
 		}
 	}
 
+	// metoda pro vyhození chyby v okénku obnovení profilu
 	public showProfileError = (message: string[]) => {
 		let error = "";
 		let delimiter = "";

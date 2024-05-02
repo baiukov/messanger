@@ -13,17 +13,27 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import { log } from '../utils/log.js';
 import { User } from './User.js';
+/*
+    Třída User - je třída entity partneru v chatu dědicí po třídě uživatele. Implementuje pattern SINGLETONE
+*/
 var Partner = /** @class */ (function (_super) {
     __extends(Partner, _super);
+    // privatní konstruktor
     function Partner() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        log("Partner has been initialized");
+        return _this;
     }
+    var _a;
+    _a = Partner;
+    // metoda pro získání instance třídy
     Partner.getUser = function () {
-        if (!this.user) {
-            this.user = new Partner();
+        if (!_a.user) {
+            _a.user = new _a();
         }
-        return this.user;
+        return _a.user;
     };
     return Partner;
 }(User));

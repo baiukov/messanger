@@ -13,17 +13,27 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import { log } from '../utils/log.js';
 import { User } from './User.js';
+/*
+    Třída User - je třída entity lokálního uživatele dědicí po třídě uživatele. Implementuje pattern SINGLETONE
+*/
 var LocalUser = /** @class */ (function (_super) {
     __extends(LocalUser, _super);
+    // privatní konstruktor
     function LocalUser() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        log("Local user has been initialized");
+        return _this;
     }
+    var _a;
+    _a = LocalUser;
+    // metoda pro získání instance třídy
     LocalUser.getUser = function () {
-        if (!this.user) {
-            this.user = new LocalUser();
+        if (!_a.user) {
+            _a.user = new _a();
         }
-        return this.user;
+        return _a.user;
     };
     return LocalUser;
 }(User));

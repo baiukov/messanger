@@ -11,6 +11,7 @@ var NotificationsController = /** @class */ (function () {
         App.on(Events.NOTIFY, function (message) {
             _this.notificationsService.show(message);
         });
+        // registrace získání chyby ze serveru
         App.onClient(Events.ERROR, function (message) {
             _this.notificationsService.showError(message);
         });

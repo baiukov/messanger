@@ -6,4 +6,5 @@ window.sendDataToFront = App.sendDataToFront
 // @ts-ignore
 window.sendID = App.setID
 
+// vytvoření aplikaci
 new App()

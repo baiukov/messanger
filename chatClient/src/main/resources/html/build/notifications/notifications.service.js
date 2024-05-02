@@ -1,3 +1,4 @@
+import { log } from '../utils/log.js';
 import { secToMs } from '../utils/secToMs.js';
 /*
     Třída NotificationsService - je třída služby notifikací, která se zabývá zpracováním logiky vypísování zpráv na obrazovku a jejich pak mazáním
@@ -28,8 +29,9 @@ var NotificationsService = /** @class */ (function () {
                 });
             };
             show(error);
-            //log(LogLevels.INFO, "Notification has been shown. Message: " + message)
+            log("Notification has been shown. Message: " + message);
         };
+        // metoda pro získání chyby z dat předaných serverem. Udělá z prvků pole jeden textový řádek
         this.showError = function (errorData) {
             var message = "";
             for (var i = 1; i < errorData.length; i++) {

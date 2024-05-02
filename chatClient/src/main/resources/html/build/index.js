@@ -3,4 +3,5 @@ import { App } from './App.js';
 window.sendDataToFront = App.sendDataToFront;
 // @ts-ignore
 window.sendID = App.setID;
+// vytvoření aplikaci
 new App();

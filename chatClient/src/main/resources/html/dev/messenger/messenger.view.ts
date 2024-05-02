@@ -2,8 +2,12 @@ import { App } from '../App.js'
 import { Events } from '../enums/Events.enum.js'
 import { log } from '../utils/log.js'
 
+/*
+	Třída MessengerView - je třída pro vytváření přehledu statických prvků hlávní stránky a nastavení jejich dynamických zpracování událostí
+*/
 export class MessengerView {
 
+	// metoda pro získání ramečku uživatele obsahujícího jméno, příjmení
 	public getUserBox = (name: string, surname: string) => {
 		const box = document.createElement("div")
 		$(box).addClass("user-option").text(name + " " + surname)
@@ -11,6 +15,7 @@ export class MessengerView {
 		return box;
 	}
 
+	// metoda pro získání ramečku chatu, obsahující prvky partneru, poslední zprávu a počet nepřečtených zpráv
 	public getDialogue = (color: string, name: string, surname: string, messageStr: string, unread: number) => {
 		const messageBox = document.createElement("div")
 		$(messageBox).addClass("message-box")
@@ -46,6 +51,7 @@ export class MessengerView {
 		$(content).append(message)
 		$(messageWrapper).append(content)
 
+		// pokud nepřečtený zprávy nejsou, nezobrazovat ctvereček s počtem
 		if (unread > 0) {
 			const unreadBox = document.createElement("div")
 			$(unreadBox).addClass("unread-amount")
@@ -59,25 +65,32 @@ export class MessengerView {
 		return messageBox
 	}
 
+	// metoda pro získání kontextového menu pro upravení vztahu uživatelů
 	public getRelationBox = (userID: string, partnerID: string, isAlreadyPinned: boolean) => {
 		const box = document.createElement("div")
 		$(box).addClass("relations")
 		const pin = document.createElement("div")
 		$(pin).addClass("pin")
 		$(pin).text(isAlreadyPinned ? "Unpin" : "Pin")
+
+		// při kliknutí na Pin/Unpin, pošle požadavek o připnutí/Odepnutí
 		$(pin).click((event) => {
 			App.emitClient(isAlreadyPinned ? Events.UNPIN : Events.PIN, [userID, partnerID])
 			event.stopPropagation()
 			$(".messages-box").empty()
 		}) 
+
 		const block = document.createElement("div") 
 		$(block).addClass("block")
 		$(block).text("Block")
+
+		// při kliknutí na Block, pošle požadavek o zablokování
 		$(block).click((event) => {
 			App.emitClient(Events.BLOCK, [userID, partnerID])
 			event.stopPropagation()
 			$(".messages-box").empty()
 		})
+		
 		$(box).append(pin, block)
 		log("Relation dialogue menu has been created: " + box)
 		return box
