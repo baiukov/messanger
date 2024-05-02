@@ -5,23 +5,33 @@ import { Partner } from '../messenger/Partner.js';
 import { log } from '../utils/log.js';
 import { secToMs } from '../utils/secToMs.js';
 import { DialogueView } from './dialogue.view.js';
+/*
+    Třída DialogueService - je třída služby chatů, která se zabývá zpracováním logiky chatů
+*/
 var DialogueService = /** @class */ (function () {
+    // konstruktor třídy, po načítání stránky bude vyvolána metoda poslouchání stisknutí tlačitek a ověření nových zpráv
     function DialogueService() {
         var _this = this;
+        // uložení instance partneru
         this.partner = Partner.getUser();
+        // uložení instance uživatele
         this.user = LocalUser.getUser();
+        // uložení instance třídy vzhledových prvků
         this.view = new DialogueView();
         this.initListeners();
         setInterval(function () {
             App.emitClient(Events.FETCHMESSAGES, [_this.user.getID(), _this.partner.getID()]);
         }, secToMs(1));
     }
+    // metoda nastavení tlačítek
     DialogueService.prototype.initListeners = function () {
         var _this = this;
+        // tlačítko vracení zpět na hlávní stránku
         $(".back-button").click(function () {
             //@ts-ignore
             window.javaConnector.switchPage("main", null);
         });
+        // forma pro odeslání zprávy
         $(".send-box").on('submit', function () {
             var message = $("#message").val();
             if (!message)
@@ -29,12 +39,15 @@ var DialogueService = /** @class */ (function () {
             App.emitClient(Events.SEND, [_this.user.getID(), _this.partner.getID(), message]);
             return false;
         });
+        // tlačitko pro submitnutí formy
         $(".submit-send").click(function () {
             $(".send-box").submit();
             $("#message").val("");
         });
+        // ukazat hned poslední zprávy
         $(".dialogue").scrollTop($(".dialogue").prop("scrollHeight"));
         $(".dialogue").css("scroll-behavior", "smooth");
+        // odeslání zprávy stisknutím tlačítka ENTER
         $("#message").keypress(function (event) {
             if (event.which === 13 && !event.shiftKey) {
                 event.preventDefault();
@@ -43,9 +56,11 @@ var DialogueService = /** @class */ (function () {
             }
         });
     };
+    // metoda nastavení identifikačního čísla
     DialogueService.prototype.setID = function (id) {
         this.user.setID(id);
     };
+    // metoda nastavení dat partneru
     DialogueService.prototype.setPartnerData = function (message) {
         if (message.length < 4)
             return;
@@ -66,6 +81,7 @@ var DialogueService = /** @class */ (function () {
         window.javaConnector.receiveMessage("AFTERCLIENT");
         App.emitClient(Events.READMESSAGES, [LocalUser.getUser().getID(), id]);
     };
+    // metoda pro zobrazení všech zpráv v chatu
     DialogueService.prototype.showMessages = function (message) {
         var dialogue = $(".messages-wrapper");
         for (var i = 1; i < message.length; i += 5) {
@@ -83,6 +99,7 @@ var DialogueService = /** @class */ (function () {
                 : this.partner.getFirstName() + " " + this.partner.getLastName();
             var msg = text.replaceAll("/+", " ");
             var date = new Date(dateStr + " " + timeStr);
+            // pokud odesílatel zprávy se liší, nebo poslední zprávu odeslal více jak před pěti minuty, zobrazí se jeho title znovu
             var lastDate = i > 1 ? new Date(message[i - 2] + " " + message[i - 1]) : null;
             // @ts-ignore
             var isLongerThanFiveMinutes = lastDate && (date - lastDate) / 60 / 1000 >= 5;

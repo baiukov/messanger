@@ -1,6 +1,10 @@
+/*
+    Třída DialogueView - je třída pro vytváření přehledu statických prvků chatu a nastavení jejich dynamických zpracování událostí
+*/
 var DialogueView = /** @class */ (function () {
     function DialogueView() {
     }
+    // metoda pro získání většího rámečku se zpravou, obsahující taky avatar a celé jméno odesílatele
     DialogueView.prototype.getMessageWithTitle = function (color, fullName, message) {
         var messageBox = document.createElement("div");
         $(messageBox).addClass("message-with-avatar");
@@ -26,6 +30,7 @@ var DialogueView = /** @class */ (function () {
         $(wrapper).append(content);
         return messageBox;
     };
+    // metoda pro získaní malého rámečku zprávy (jenom textový řádek)
     DialogueView.prototype.getMessage = function (message) {
         var messageBox = document.createElement("div");
         $(messageBox).addClass("message");

@@ -14,11 +14,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { User } from './User.js';
+/*
+    Třída Partner - je třída entity partneru v chatu dědicí po třídě uživatele. Implementuje pattern SINGLETONE
+*/
 var Partner = /** @class */ (function (_super) {
     __extends(Partner, _super);
+    // privatní konstruktor
     function Partner() {
         return _super.call(this) || this;
     }
+    // metoda pro získání instance třídy
     Partner.getUser = function () {
         if (!this.user) {
             this.user = new Partner();

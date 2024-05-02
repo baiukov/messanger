@@ -14,11 +14,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { User } from './User.js';
+/*
+    Třída LocalUser - je třída entity lokálního uživatele dědicí po třídě uživatele. Implementuje pattern SINGLETONE
+*/
 var LocalUser = /** @class */ (function (_super) {
     __extends(LocalUser, _super);
+    // privatní konstruktor
     function LocalUser() {
         return _super.call(this) || this;
     }
+    // metoda pro získání instance třídy
     LocalUser.getUser = function () {
         if (!this.user) {
             this.user = new LocalUser();

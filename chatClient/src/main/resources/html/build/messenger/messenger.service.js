@@ -4,27 +4,38 @@ import { log } from '../utils/log.js';
 import { secToMs } from '../utils/secToMs.js';
 import { LocalUser } from './LocalUser.js';
 import { MessengerView } from './messenger.view.js';
+/*
+    Třída MessengerService - je třída služby uživatelských zpráv, která se zabývá zpracováním logiky zpráv a registrace
+*/
 var MessengerService = /** @class */ (function () {
+    // konstruktor třídy, po načítání stránky, bude vyvolána metoda poslouchání stisknutí tlačitek a ověření stavu chatů uživatele
     function MessengerService() {
         var _this = this;
+        // uložení instance třídy vzhledových prvků
         this.view = new MessengerView();
+        // metoda nastavení tlačítek
         this.setListeners = function () {
+            // pokud uživatel zadá něco do vyhledavacího pole, metoda přepošle kus tento uživatelského jména na server, který se pokusí podle toho ho vyhledat
             $("#user").keyup(function () {
                 $(".profile").css("display", "none");
                 var val = $("#user").val();
                 $(".user-list").empty();
                 App.emitClient(Events.FETCHUSERS, [val]);
             });
+            // po kliknutí na avatar, otevře se okénko změn profilu
             $(".profile-avatar").click(function (event) {
                 $(".profile").css("display", "flex");
                 event.stopPropagation();
             });
+            // při kliknutí kdekoliv na stránce, okénko pro změny profilu se zavře
             $(document.body).click(function () {
                 $(".profile").css("display", "none");
             });
+            // při kliknutí na profile, nebude vyvolána další kliknutí 
             $(".profile").click(function (event) {
                 event.stopPropagation();
             });
+            // tlačítko uložení nových dat profilu
             $("#save").click(function (event) {
                 var shouldClose = _this.update();
                 _this.fetchData(LocalUser.getUser().getID() || "");
@@ -35,15 +46,18 @@ var MessengerService = /** @class */ (function () {
                 return false;
             });
         };
+        // metoda pro získání celého jména a barvy avataru uživatele
         this.fetchData = function (id) {
             LocalUser.getUser().setID(id);
             App.emitClient(Events.FETCHNAME, [id]);
             App.emitClient(Events.FETCHCOLOR, [id]);
         };
+        // metoda pro nastavení celého jména po získání ze serveru
         this.setFullName = function (message) {
             var firstName;
             var lastName;
             var user = LocalUser.getUser();
+            // pokud není, vyhodí se Unknown Unknown
             if (message.length < 3) {
                 firstName = "Unknown";
                 lastName = "Unknown";
@@ -60,6 +74,7 @@ var MessengerService = /** @class */ (function () {
             $("#name").val(firstName);
             $("#surname").val(lastName);
         };
+        // metoda pro uložení změn profilu
         this.update = function () {
             var currentPassword = $("#currentPassword").val();
             if (!currentPassword) {
@@ -91,6 +106,7 @@ var MessengerService = /** @class */ (function () {
             ]);
             return true;
         };
+        // metoda pro našeptáných uživatelů podle části jejích jména
         this.showUsers = function (message) {
             var _loop_1 = function (i) {
                 var name_1 = message[i];
@@ -98,6 +114,7 @@ var MessengerService = /** @class */ (function () {
                 var partnerID = message[i + 2];
                 var box = _this.view.getUserBox(name_1, surname);
                 var userID = LocalUser.getUser().getID() || '';
+                // při kliknutí na tohoto uživatele, přesměruje do jejich chatu
                 $(box).click(function () {
                     log([Events.READMESSAGES, userID, partnerID].toString());
                     App.emitClient(Events.READMESSAGES, [userID, partnerID]);
@@ -110,8 +127,10 @@ var MessengerService = /** @class */ (function () {
                 _loop_1(i);
             }
         };
+        // metoda pro nastavení barvy avataru
         this.setColor = function (message) {
             var color;
+            // pokud neexistuje, nastaví se standardní (modrá)
             if (message.length < 2) {
                 color = "F2C4DE";
             }
@@ -123,12 +142,14 @@ var MessengerService = /** @class */ (function () {
             $("#avatar").css("background-color", hex);
             $(".big-avatar").css("background-color", hex);
         };
+        // metoda pro nakreslení všech chatů na hlavní stránce
         this.showDialogues = function (message) {
             var messagesBox = $(".messages-box");
             var _loop_2 = function (i) {
                 var partnerID = message[i];
                 if ($("#".concat(partnerID)).length)
                     return "continue";
+                // pro každý chat vypíše jméno, přijmení partnera, jeho avatar, text poslední zprávy a počet nepřečtených
                 var name_2 = message[i + 1];
                 var surname = message[i + 2];
                 var partnerColor = message[i + 3];
@@ -139,10 +160,12 @@ var MessengerService = /** @class */ (function () {
                 var dialogue = _this.view.getDialogue(hex, name_2, surname, text, parseInt(unread));
                 $(dialogue).attr("id", partnerID);
                 var id = LocalUser.getUser().getID();
+                // při kliknutí na rameček chatu, přesměruje do něj
                 $(dialogue).click(function () {
                     // @ts-ignore
                     window.javaConnector.goToDialogue(partnerID);
                 });
+                // při kliknutí pravým tlačítkem na chat, otevře se kontextní menu s připnutím a zablokováním
                 $(dialogue).on('contextmenu', function (event) {
                     $(".relations").remove();
                     var relationBox = _this.view.getRelationBox(id || "", partnerID, isPinned);
@@ -157,6 +180,7 @@ var MessengerService = /** @class */ (function () {
                 _loop_2(i);
             }
         };
+        // metoda pro vyhození chyby v okénku obnovení profilu
         this.showProfileError = function (message) {
             var error = "";
             var delimiter = "";
