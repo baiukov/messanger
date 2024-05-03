@@ -197,7 +197,7 @@ public class AppService {
             sb.append(delimiter).append(data[i]);
             delimiter = " ";
         }
-        String messageText = sb.toString();
+        String messageText = sb.toString().replaceAll("/+", "|+");
 
         Message message = new Message();
         message.setSender(sender);
