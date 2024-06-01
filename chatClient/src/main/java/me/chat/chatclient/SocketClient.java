@@ -48,17 +48,19 @@ public class SocketClient {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            Thread readerThread = new Thread(() -> {
-                try {
-                    String serverResponse;
-                    while ((serverResponse = in.readLine()) != null) {
-                        log.info("Message received from the server - " + serverResponse);
-                        if (messageRouter != null) {
-                            messageRouter.sendMessageToFront(serverResponse);
+            Thread readerThread = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String serverResponse;
+                        while ((serverResponse = in.readLine()) != null) {
+                            log.info("Message received from the server - " + serverResponse);
+                            if (messageRouter != null) {
+                                messageRouter.sendMessageToFront(serverResponse);
+                            }
                         }
+                    } catch (IOException ex) {
+                        log.error("Exception occurred at reader thread start " + ex.getMessage());
                     }
-                } catch (IOException ex) {
-                    log.error("Exception occurred at reader thread start " + ex.getMessage());
                 }
             });
             readerThread.start();

@@ -1,5 +1,8 @@
 package me.chat.chatclient;
 
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -20,7 +23,7 @@ import java.util.Objects;
  * @author Aleksei Baiukov
  * @version 02.05
  */
-public class Application extends javafx.application.Application {
+public class Client extends Application {
 
     /**
      * Uložení loggeru
@@ -37,9 +40,9 @@ public class Application extends javafx.application.Application {
 
         // inicializace prohlížeče
         WebView webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
-        File htmlFile = new File(Objects.requireNonNull(
-                getClass().getResource("/html/pages/login/index.html")).getFile()
+        final WebEngine webEngine = webView.getEngine();
+        File htmlFile = new File(
+                getClass().getResource("/html/pages/login/index.html").getFile()
         );
 
         webEngine.load(htmlFile.toURI().toString());
@@ -48,15 +51,17 @@ public class Application extends javafx.application.Application {
         SocketClient socketClient = new SocketClient();
         socketClient.start("45.67.57.171");
 
-        MessageRouter messageRouter = new MessageRouter(webEngine, socketClient);
+        final MessageRouter messageRouter = new MessageRouter(webEngine, socketClient);
         socketClient.setMessageRouter(messageRouter);
 
         // přiřázení JS Obejktu k frontendu pro komunikaci
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == Worker.State.SUCCEEDED) {
-                JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("javaConnector", messageRouter);
-                log.info("Java connector has been attached to the front project as window member");
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+                    JSObject window = (JSObject) webEngine.executeScript("window");
+                    window.setMember("javaConnector", messageRouter);
+                    log.info("Java connector has been attached to the front project as window member");
+                }
             }
         });
 

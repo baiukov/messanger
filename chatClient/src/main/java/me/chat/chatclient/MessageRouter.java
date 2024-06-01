@@ -1,6 +1,8 @@
 package me.chat.chatclient;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import org.apache.logging.log4j.LogManager;
@@ -55,10 +57,12 @@ public class MessageRouter {
      *
      * @param message zpráva
      */
-    public void sendMessageToFront(String message) {
-        Platform.runLater(() -> {
-            engine.executeScript("window.sendDataToFront('" + message + "')");
-            log.info("Message sent to front - " + message);
+    public void sendMessageToFront(final String message) {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                engine.executeScript("window.sendDataToFront('" + message + "')");
+                log.info("Message sent to front - " + message);
+            }
         });
     }
 
@@ -80,9 +84,11 @@ public class MessageRouter {
      * Metoda pro přeposlání uloženého identifikačního čísla
      */
     public void getID() {
-        Platform.runLater(() -> {
-            engine.executeScript("window.sendID('" + id + "')");
-            log.info("ID send to front: " + id);
+        Platform.runLater(new Runnable() {
+            public void run() {
+                engine.executeScript("window.sendID('" + id + "')");
+                log.info("ID send to front: " + id);
+            }
         });
     }
 
@@ -113,18 +119,19 @@ public class MessageRouter {
      * @param folder název složky se stránkou
      * @param commandOnReady příkaz vyvolaný po načtení
      */
-    public void switchPage(String folder, String commandOnReady) {
-        File htmlFile = new File(Objects.requireNonNull(
-                getClass().getResource("/html/pages/" + folder + "/index.html")).getFile()
-        );
+    public void switchPage(final String folder, final String commandOnReady) {
+        File htmlFile = new File(getClass().getResource("/html/pages/" + folder + "/index.html").getFile());
         engine.load(htmlFile.toURI().toString());
-        engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == Worker.State.SUCCEEDED) {
-                engine.executeScript("window.sendID('" + id + "')");
-                if (commandOnReady == null) return;
-                engine.executeScript(commandOnReady);
+        engine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue,
+                                Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+                    engine.executeScript("window.sendID('" + id + "')");
+                    if (commandOnReady == null) return;
+                    engine.executeScript(commandOnReady);
+                }
+                log.info("Page has been successfully switch to " + folder);
             }
-            log.info("Page has been successfully switch to " + folder);
         });
     }
 }
