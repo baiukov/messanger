@@ -8,3 +8,4 @@ chatClient/logs
 chatServer/logs
 chatServer/out
 chatClient/out
+chatclient/jcef-bundle
